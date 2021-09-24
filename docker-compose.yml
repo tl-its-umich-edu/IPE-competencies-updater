@@ -4,5 +4,4 @@ services:
   job:
     build:
       context: .
-      image: ipe-updater:latest
       dockerfile: ./dockerfiles/Dockerfile
