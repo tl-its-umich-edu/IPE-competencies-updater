@@ -4,4 +4,4 @@ services:
   job:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./dockerfiles/Dockerfile
