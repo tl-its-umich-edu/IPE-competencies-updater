@@ -6,3 +6,5 @@ services:
       context: .
       dockerfile: ./dockerfiles/Dockerfile
     env_file: .env
+    volumes:
+      - ${HOME}/secrets:/secrets
