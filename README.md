@@ -17,7 +17,7 @@ This Project is for running the InterProfessional Education(IPE) courses data fo
 2. The [VScode](https://code.visualstudio.com/docs/python/debugging) debug configiration is configured to run current file. Always you should be at `ipe-start.py` when you start the run
 
 ## Unit tests
-1. pytest is used for running test
+1. pytest is used for running test. Need to configure `IS_DOCKER_RUN = FALSE`
 2. Run Pytest on command line: `pytest`. this should run all the tests in the `tests` folder
 3. This command will include log messages when running tests `pytest --log-cli-level=DEBUG`
 4. Note: Not configured to run the tests via docker run

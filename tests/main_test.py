@@ -7,13 +7,13 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 @pytest.fixture
-def sheets_data():
+def ipe_props():
     load_dotenv()
     envProps: ReadEnvProps =  ReadEnvProps()
     return envProps
 
-def test_worksheet(sheets_data):
-    data = GetIPEDataFromSheets(sheets_data.get_env_props())
+def test_worksheet(ipe_props):
+    data = GetIPEDataFromSheets(ipe_props.get_env_props())
     assert data.get_data() is not None
     ws = data.get_data()
     assert len(ws.get_all_values()) == 168
