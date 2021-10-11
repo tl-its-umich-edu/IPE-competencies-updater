@@ -16,5 +16,6 @@ def test_worksheet(ipe_props):
     data = GetIPEDataFromSheets(ipe_props.get_env_props())
     assert data.get_data() is not None
     ws = data.get_data()
+    logger.debug('This is test')
     assert len(ws.get_all_values()) == 168
 
