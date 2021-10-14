@@ -5,7 +5,7 @@ This Project is for running the InterProfessional Education(IPE) courses data fo
 ## Script Run
 1. Configurations before running the script
     1. create `.env` file and place it in the project root level, copy the content from `config/env_sample.txt`. Change as needed 
-    2. Google Service account JSON file need to read the google spreadsheet content. Create the folder `secrets` home directory and add `ipe_gserviceaccount.json` inside it. You can find this file [Dropbox](https://www.dropbox.com/home/TL%20Security%20files/IPE%20Process)
+    2. Google Service account JSON file is needed to read the google spreadsheet content. Create the folder structure `secrets/ipe/` inside home directory and add `ipe_gserviceaccount.json` inside it. You can find this file [Dropbox](https://www.dropbox.com/home/TL%20Security%20files/IPE%20Process)
 2. Docker run 
    1. Building the project `docker compose build`
    2. Running it `docker compose up`
