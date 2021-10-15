@@ -13,4 +13,4 @@ RUN python -m pip install -r requirements.txt
 WORKDIR /app
 COPY . /app
 
-CMD ["python", "ipe-start.py"]
+CMD ["./start.sh"]

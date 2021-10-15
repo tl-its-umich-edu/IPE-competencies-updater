@@ -7,7 +7,7 @@
 **/.project
 **/.settings
 **/.toolstarget
-**/venv
+**/venv*
 **/.vs
 **/.vscode
 **/.history

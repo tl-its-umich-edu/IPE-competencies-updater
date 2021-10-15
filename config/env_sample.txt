@@ -1,0 +1,8 @@
+IPE_SHEET_ID=1fvYhtxlu3pa8vNBjOVzp1hwNBsv823mTD3uP6l5_WuI
+IPE_SHEET_NAME=Offering
+
+GSERVICE_ACCOUNT_PATH=secrets/ipe/ipe_gserviceaccount.json
+
+LOG_LEVEL=DEBUG
+
+IS_DOCKER_RUN=True
