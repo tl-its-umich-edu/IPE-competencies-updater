@@ -1,0 +1,2 @@
+class AssignmentFlow:
+    pass
