@@ -70,3 +70,4 @@ class IPECompetenciesOrchestrator:
         self._clean_up_ipe_dataframe()
         self.filter_df_course_ids.apply(
             lambda course: self.start_competencies_assigning_process(course), axis=1)
+

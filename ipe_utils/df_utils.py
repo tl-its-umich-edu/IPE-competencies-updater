@@ -17,3 +17,4 @@ def df_remove_non_course_id(df: pd.DataFrame) -> pd.DataFrame:
     df_with_coursesId = df.loc[df['Canvas Course ID'].apply(
         pd.to_numeric, errors='coerce').notnull()]
     return df_with_coursesId
+
