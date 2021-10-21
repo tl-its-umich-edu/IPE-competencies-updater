@@ -27,13 +27,12 @@ class GetIPEDataFromSheets(GetIPEData):
 
         """
         logger.debug('Getting data from IPE Google Sheets')
-        google_service_account_path: str = self._get_google_service_account_path()
-        logger.info(f"Path to service account: {google_service_account_path}")
-        if not os.path.exists(google_service_account_path):
-            logger.error(f'Service account file not found: {google_service_account_path}')
+        logger.info(f"Path to service account: {self.service_account_path}")
+        if not os.path.exists(self.service_account_path):
+            logger.error(f'Service account file not found: {self.service_account_path}')
             sys.exit(1)
         try:
-            credentials = gs.service_account(google_service_account_path)
+            credentials = gs.service_account(self.service_account_path)
             sheets = credentials.open_by_url(f'{self.GOOGLE_SHEETS_URL}{self.sheet_id}')
             worksheet = sheets.worksheet(self.sheet_name)
             return worksheet
@@ -47,11 +46,3 @@ class GetIPEDataFromSheets(GetIPEData):
             
             sys.exit(1)
     
-    def _get_google_service_account_path(self)-> str:
-        """
-        Get the path to the Google service account file
-        """
-        local_run_path: str = os.path.join(os.environ['HOME'], self.service_account_path)
-        docker_run_path: str = os.path.join(os.path.sep, self.service_account_path)
-        service_account_path: str = docker_run_path if eval(self.is_docker_run) else local_run_path
-        return service_account_path

@@ -23,7 +23,7 @@ This Project is for running the InterProfessional Education(IPE) courses data fo
 
 
 ## Type checking
-1. This command will check all the python files `mypy ipe-start`
+1. This command will check all the python files `mypy ipe-start.py`
 2. Currently gspread library don't have type as part of the library, nor python stubs written separately in [typeshed](https://github.com/python/typeshed). Currently simply ignoring then in the `mypy.ini`
 3. Note: Not configured to run via docker run
 
