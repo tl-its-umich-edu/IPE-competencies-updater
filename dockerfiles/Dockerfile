@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.9-slim
 
 # Installs needed Linux packages
 RUN apt-get update && \

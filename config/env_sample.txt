@@ -1,5 +1,5 @@
 IPE_SHEET_ID=1UrBaZpR5USS-DbbsdNNzjfEFdLQSnqg5RKUUmHkXHGg
-IPE_SHEET_NAME=Offering
+IPE_SHEET_NAME=Offerings
 
 GSERVICE_ACCOUNT_PATH=absolute-path-to-google-service-account-file
 LOG_LEVEL=DEBUG
