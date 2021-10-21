@@ -3,4 +3,9 @@ IPE_SHEET_ID=<replace-with-Google-sheets-ID>
 IPE_SHEET_NAME=Offerings
 
 GSERVICE_ACCOUNT_PATH=absolute-path-to-google-service-account-file
+
+API_DIRECTORY_CLIENT_ID=
+API_DIRECTORY_SECRET=
+# This is the rubrics that contain IPE competencies defined as Learning outcomes. This cannot be changed once it is assigned to student submissions.
+IPE_RUBRIC_ID=76864
 LOG_LEVEL=DEBUG
