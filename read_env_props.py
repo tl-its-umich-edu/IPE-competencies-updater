@@ -13,10 +13,6 @@ class ReadEnvProps:
         self.env_props['sheet_id'] = os.environ.get('IPE_SHEET_ID')
         self.env_props['sheet_name'] = os.environ.get('IPE_SHEET_NAME')
         self.env_props['service_account_path'] = os.environ.get('GSERVICE_ACCOUNT_PATH')
-        self.env_props['api_client'] = os.environ.get('API_DIRECTORY_CLIENT_ID')
-        self.env_props['api_secret'] = os.environ.get('API_DIRECTORY_SECRET')
-        self.env_props['api_url'] = os.environ.get('API_DIRECTORY_URL')
-        self.env_props['rubric_id'] = os.environ.get('IPE_RUBRIC_ID')
 
 
 
