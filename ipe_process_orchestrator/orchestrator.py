@@ -22,7 +22,9 @@ class IPECompetenciesOrchestrator:
         self.api_handler: APIHandler = api_handler
         self.filter_df_course_ids = pd.DataFrame()
 
-    def _clean_up_ipe_dataframe(self) -> None:
+    
+    
+    def _clean_up_ipe_dataframe(self):
         """
         Clean up the dataframe
         1. leading and trailing spaces df.columns
