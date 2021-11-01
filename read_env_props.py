@@ -16,12 +16,14 @@ class ReadEnvProps:
         self.env_props['api_client'] = os.environ.get('API_DIRECTORY_CLIENT_ID')
         self.env_props['api_secret'] = os.environ.get('API_DIRECTORY_SECRET')
         self.env_props['api_url'] = os.environ.get('API_DIRECTORY_URL')
-        self.env_props['rubric_id'] = os.environ.get('IPE_RUBRIC_ID')
+        self.env_props['rubric_id'] = int(os.environ.get('IPE_RUBRIC_ID'))
+        self.env_props['rubric_account_id'] = int(os.environ.get('IPE_RUBRICS_ACCOUNT'))
+        self.env_props['retry_attempts'] = int(os.environ.get('MAX_REQ_ATTEMPTS'))
 
 
 
     def get_env_props(self) -> DefaultDict[str, str]:
-        logger.info(self.env_props)
+        logger.debug(self.env_props)
         is_missing_props: bool = False
         for key, value in self.env_props.items():
             if self.env_props[key] is None or self.env_props[key] == '':
