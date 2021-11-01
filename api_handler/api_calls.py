@@ -18,7 +18,6 @@ class APIHandler:
     def check_if_response_successful(self, response: Response) -> bool:
         """
         Checks whether response has 200 status code and the JSON text can be parsed.
-
         :param response: Response from ApiUtil.api_call
         :type response: Response
         :return: True or False depending on whether the response was successful
@@ -51,7 +50,6 @@ class APIHandler:
     ) -> Any:
         """
         Pulls data from the UM API Directory, handling errors and retrying if necessary.
-
         When the maximum number of request attempts is reached, the function logs an error and returns None.
         :param url: URL ending for request
         :type url: string
