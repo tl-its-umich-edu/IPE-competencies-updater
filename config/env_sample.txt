@@ -1,5 +1,5 @@
-# This is the id after the /spreadsheets/d/ and before /edit in the sheets URL
-IPE_SHEET_ID=<replace-with-Google-sheets-ID>
+# This is the id after the /spreadsheets/d/ and before /edit
+IPE_SHEET_ID=<replace-with-Gheets-ID>
 IPE_SHEET_NAME=Offerings
 
 GSERVICE_ACCOUNT_PATH=absolute-path-to-google-service-account-file

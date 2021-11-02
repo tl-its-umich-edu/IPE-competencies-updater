@@ -5,7 +5,8 @@ from dataclasses import dataclass, fields
 from api_handler.api_calls import APIHandler
 from ipe_process_orchestrator.api_helper import response_none_check
 from constants import (
-  CANVAS_URL_BEGIN, COL_COURSE_ID, COL_DOSAGE,FULL_DOSE, NO_DOSE, COL_ASSIGNING_LO_CRITERIA)
+  CANVAS_URL_BEGIN, COL_COURSE_ID, COL_DOSAGE,FULL_DOSE, NO_DOSE, 
+  COL_ASSIGNING_LO_CRITERIA, AC_70_PERCENT_GRADE, COMPETENCY_ASSIGNING_COURSE_GRADE)
 logger = logging.getLogger(__name__)
 
 
@@ -90,6 +91,9 @@ class IPECompetenciesEntruster():
         student_id = student['student_canvas_id']
         student_name = student['student_name']
         grade = student['grade']
+        if assignment_criteria == AC_70_PERCENT_GRADE and grade<COMPETENCY_ASSIGNING_COURSE_GRADE:
+          logger.info(f'Skipping student {student_name} id: {student_id} assignment: {self.assignment_id} course {course_id} with grade {grade}')
+          continue
         assigning_rubrics_url= f'{CANVAS_URL_BEGIN}/courses/{course_id}/assignments/{self.assignment_id}/submissions/{student_id}'
         resp = self.api_handler.api_call_with_retries(assigning_rubrics_url, 'PUT', competency_assign_payload)
         err_msg = f'Error assigning competancies for student {student_name} id: {student_id} assignment: {self.assignment_id} course {course_id}'

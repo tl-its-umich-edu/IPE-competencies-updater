@@ -25,3 +25,6 @@ NO_DOSE = 'No dose'
 AC_ALL_ENROLLED='All Enrolled'
 AC_70_PERCENT_GRADE='Passing - 70% or Higher'
 AC_DO_NOT_RUN='Do Not Run'
+
+#Course Percent Value
+COMPETENCY_ASSIGNING_COURSE_GRADE = 70
