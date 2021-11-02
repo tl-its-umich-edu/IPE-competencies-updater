@@ -8,3 +8,11 @@ services:
     env_file: .env
     volumes:
       - ${HOME}/secrets:/secrets
+  test: 
+    build:
+      context: .
+      dockerfile: ./dockerfiles/Dockerfile
+    env_file: .env
+    volumes:
+      - ${HOME}/secrets:/secrets
+    command: pytest --log-cli-level=DEBUG

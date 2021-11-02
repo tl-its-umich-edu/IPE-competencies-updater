@@ -1,8 +1,6 @@
-IPE_SHEET_ID=1fvYhtxlu3pa8vNBjOVzp1hwNBsv823mTD3uP6l5_WuI
-IPE_SHEET_NAME=Offering
+# This is the id after the /spreadsheets/d/ and before /edit in the sheets URL
+IPE_SHEET_ID=<replace-with-Google-sheets-ID>
+IPE_SHEET_NAME=Offerings
 
-GSERVICE_ACCOUNT_PATH=secrets/ipe/ipe_gserviceaccount.json
-
+GSERVICE_ACCOUNT_PATH=absolute-path-to-google-service-account-file
 LOG_LEVEL=DEBUG
-
-IS_DOCKER_RUN=True

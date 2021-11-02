@@ -12,12 +12,10 @@ logging.basicConfig(level=os.getenv('LOG_LEVEL') if os.getenv('LOG_LEVEL') else 
 def main():
     logger.info("IPE Process Starting....")
     envProps: ReadEnvProps =  ReadEnvProps()
-    logger.info(envProps.get_env_props())
     ipeData: GetIPEDataFromSheets=GetIPEDataFromSheets(envProps.get_env_props())
     worksheet: Worksheet = ipeData.get_data()
-    df = pd.DataFrame(worksheet.get_all_records())
-    logger.info(df.head())
-
+    worksheet_dataframe: pd.DataFrame  = pd.DataFrame(worksheet.get_all_records())
+    logger.info(worksheet_dataframe.head())
 
 if __name__ == '__main__':
     main()
