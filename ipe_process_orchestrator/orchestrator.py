@@ -11,12 +11,8 @@ from typing import Any, Dict
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
-from ipe_process_orchestrator.get_rubric_data import IPERubricDataMapping
-from ipe_process_orchestrator.assigning_competencies import IPECompetenciesEntruster
 from api_handler.api_calls import APIHandler
-from constants import ( 
-    COL_COURSE_ID, COL_ASSIGNING_LO_CRITERIA, AC_DO_NOT_RUN
-    )
+from constants import ( COL_COURSE_ID)
 
 
 logger = logging.getLogger(__name__)
