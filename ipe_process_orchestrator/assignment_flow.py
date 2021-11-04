@@ -1,5 +1,5 @@
 import logging, sys, json
-from typing import Any, Dict, List, NoReturn, Tuple, Union
+from typing import Any, Dict, List, NoReturn, Union
 from requests import Response
 from constants import (CANVAS_URL_BEGIN, ASSIGNMENT_GROUP_NAME, ASSIGNMENT_NAME)
 from api_handler.api_calls import APIHandler
@@ -40,7 +40,7 @@ class IPEAssignmentFlow:
     
     def _delete_assignment(self, assignment_id: int) -> None:
         """
-        Deleting the assignment
+        Deleting the copied course assignment
         """
         delete_assignment_url: str = f'{CANVAS_URL_BEGIN}/courses/{self.course_id}/assignments/{assignment_id}'
         delete_assignment_resp: Response = self.api_handler.api_call_with_retries(delete_assignment_url, 'DELETE')
@@ -50,16 +50,6 @@ class IPEAssignmentFlow:
 
         logging.info(f'Deleted assignment: {assignment_id} for course: {self.course_id}')
             
-    def _delete_assignment_group(self, assignment_group_id: int) -> None:
-        """
-        deleting the assignment group 
-        """
-        delete_ag_url: str = f'{CANVAS_URL_BEGIN}/courses/{self.course_id}/assignment_groups/{assignment_group_id}'
-        delete_ag_resp: Response = self.api_handler.api_call_with_retries(delete_ag_url, 'DELETE')
-        if delete_ag_resp is None:
-            logger.error(f'Error deleting assignment group: {assignment_group_id} for course failed {self.course_id}')
-            sys.exit(1)
-
     def _create_assignment_group(self)-> Union[int, NoReturn]:
         """
         Creating an assignment group with name 'IPE Competencies' always and locate at the end of the assignment list

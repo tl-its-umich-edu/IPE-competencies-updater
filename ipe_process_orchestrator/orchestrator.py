@@ -3,12 +3,8 @@ from typing import Any, Dict
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
-from ipe_process_orchestrator.get_rubric_data import IPERubricDataMapping
-from ipe_process_orchestrator.assigning_competencies import IPECompetenciesEntruster
 from api_handler.api_calls import APIHandler
-from constants import ( 
-    COL_COURSE_ID, COL_ASSIGNING_LO_CRITERIA, AC_DO_NOT_RUN
-    )
+from constants import ( COL_COURSE_ID)
 
 
 logger = logging.getLogger(__name__)
@@ -54,30 +50,10 @@ class IPECompetenciesOrchestrator:
             return assignment_id
         except Exception as e:
             raise e
-      
-    def getting_rubrics(self):
-        """
-        Get the rubric data from the API
-        """
-        try:
-            rubric_account_id: int = self.props['rubric_account_id']
-            rubric_id: int = self.props['rubric_id']
-            rubric_data = IPERubricDataMapping(self.api_handler, rubric_account_id, rubric_id).fetch_rubric_api()
-            return rubric_data
-        except Exception as e:
-            logger.error(f'Error in getting_rubrics: {e}')
-            sys.exit(1)
-            
     
-    def start_competencies_assigning_process(self, course, rubric_data):
+    def start_competencies_assigning_process(self, course):
         try:
-            if course[COL_ASSIGNING_LO_CRITERIA] == AC_DO_NOT_RUN:
-                logger.info(f'Course {course[COL_COURSE_ID]} is not eligible for competencies assigning process')
-                return
-            # assignment_id = self._create_delete_assignment(course)
-            # if course[COL_COURSE_ID] == 249168 or course[COL_COURSE_ID] == 307473 or course[COL_COURSE_ID] == 176535:
-            if course[COL_COURSE_ID] == 307473:
-                IPECompetenciesEntruster(self.api_handler, 1538154, course, rubric_data).start_assigning_process()
+            assignment_id = self._create_delete_assignment(course)
         except Exception as e:
             logger.error(e)
     
@@ -86,7 +62,5 @@ class IPECompetenciesOrchestrator:
         This is the place where all the IPE process flow will be orchestrated.
         """
         self._clean_up_ipe_dataframe()
-        print(list(self.filter_df_course_ids['Canvas Course ID']))
-        rubrics_data: Dict[str, Any] = self.getting_rubrics()
-        self.filter_df_course_ids.apply(lambda course: self.start_competencies_assigning_process(course, rubrics_data), axis=1)
+        self.filter_df_course_ids.apply(lambda course: self.start_competencies_assigning_process(course), axis=1)
         
