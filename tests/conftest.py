@@ -4,13 +4,15 @@ import pandas as pd
 from dotenv import load_dotenv
 from read_env_props import ReadEnvProps
 from ipe_course_data.get_ipe_data_from_gsheets import GetIPEDataFromSheets
+from api_handler.api_calls import APIHandler
 
 
 
+# These are test specific to a particular test module
 pytest_plugins = [
     "tests.fixtures.worksheets_columns"
 ]
-
+#  session scoped will be used for until the tear down of the test. Props, worksheets and dataframes common to all tests
 @pytest.fixture(scope="session", autouse=True)
 def ipe_props():
     """
@@ -36,6 +38,10 @@ def ipe_ws_df(ipe_workbook)->pd.DataFrame:
     """
     df = pd.DataFrame(ipe_workbook)
     return df
+
+@pytest.fixture(scope="session", autouse=True)
+def api_handler(ipe_props):
+    return APIHandler(ipe_props)
 
     
 
