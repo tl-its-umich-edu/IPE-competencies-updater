@@ -19,8 +19,6 @@ class ReadEnvProps:
         self.env_props['rubric_account_id'] = os.environ.get('IPE_RUBRICS_ACCOUNT')
         self.env_props['retry_attempts'] = os.environ.get('MAX_REQ_ATTEMPTS')
 
-
-
     def get_env_props(self) -> Dict[str, Optional[str]]:
         logger.debug(self.env_props)
         is_missing_props: bool = False
