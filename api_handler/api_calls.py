@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 class APIHandler:
     def __init__(self, props) -> None:
         self.api_handler: ApiUtil = ApiUtil(props.get('api_url'), props.get('api_client'), props.get('api_secret'))
+        self.max_req_attempts: int = props.get('retry_attempts')
     
     def check_if_response_successful(self, response: Response) -> bool:
         """
@@ -47,7 +48,6 @@ class APIHandler:
         url: str,
         method: str,
         payload: Union[Dict[str, Any], None] = None,
-        max_req_attempts: int = 3,
     ) -> Union[Response, None]:
         """
         Pulls data from the UM API Directory, handling errors and retrying if necessary.
@@ -75,7 +75,7 @@ class APIHandler:
 
         logger.debug('Making a request for data...')
 
-        for i in range(1, max_req_attempts + 1):
+        for i in range(1, self.max_req_attempts + 1):
             logger.debug(f'Attempt #{i}')
             try:
                 response = self.api_handler.api_call(url, CANVAS_SCOPE, method, request_payload)

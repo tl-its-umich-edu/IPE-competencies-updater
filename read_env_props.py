@@ -18,7 +18,7 @@ class ReadEnvProps:
         self.env_props['api_url'] = os.environ.get('API_DIRECTORY_URL')
         self.env_props['rubric_id'] = int(os.environ.get('IPE_RUBRIC_ID'))
         self.env_props['rubric_account_id'] = int(os.environ.get('IPE_RUBRICS_ACCOUNT'))
-        self.env_props['retry_attempts'] = int(os.environ.get('MAX_REQ_ATTEMPTS'))
+        self.env_props['retry_attempts'] = int(os.environ.get('MAX_REQ_ATTEMPTS')) if int(os.environ.get('MAX_REQ_ATTEMPTS')) else 3
 
 
 
