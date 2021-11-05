@@ -84,6 +84,3 @@ def test_api_retry_if_failure(ipe_props, api_handler: APIHandler):
   assert mock_api_call.call_count == 3
   assert response == None
 
-  
-
-
