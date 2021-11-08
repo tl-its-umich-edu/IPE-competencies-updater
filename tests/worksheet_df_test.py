@@ -16,12 +16,15 @@ def test_worksheet(ipe_workbook: List):
     """
     assert len(ipe_workbook) == 167
 
+
 def test_df_column_whitespaces(worksheet_columns_with_whitespace: pd.Index, worksheet_columns: List):
     """
     Testing dataframe columns will always be no leading and trailing whitespaces
     """
-    df_cols_stripped: pd.Index = df_columns_strip(worksheet_columns_with_whitespace)
+    df_cols_stripped: pd.Index = df_columns_strip(
+        worksheet_columns_with_whitespace)
     assert list(df_cols_stripped) == worksheet_columns
+
 
 def test_non_course_id_clean_up(ipe_ws_df: pd.DataFrame):
     """
@@ -30,6 +33,7 @@ def test_non_course_id_clean_up(ipe_ws_df: pd.DataFrame):
     df_after: pd.DataFrame = df_remove_non_course_id(ipe_ws_df)
     course_list_after_clean_up: List = list(df_after[COL_COURSE_ID])
     assert(all(isinstance(x, int) for x in course_list_after_clean_up))
+
 
 def test_clean_up_df(ipe_ws_df: pd.DataFrame, ipe_props: ReadEnvProps):
     """
@@ -40,8 +44,3 @@ def test_clean_up_df(ipe_ws_df: pd.DataFrame, ipe_props: ReadEnvProps):
     orc._clean_up_ipe_dataframe()
     assert orc.orginal_df.shape[0] == 167
     assert orc.filter_df_course_ids.shape[0] == 71
-    
-   
-
-
-

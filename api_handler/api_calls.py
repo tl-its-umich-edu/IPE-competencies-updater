@@ -1,6 +1,6 @@
 import json, logging
 from json.decoder import JSONDecodeError
-from typing import Any, Dict, Union
+from typing import Any, Dict, Optional, Union
 from constants import (
     CANVAS_SCOPE
 )
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class APIHandler:
     def __init__(self, props) -> None:
         self.api_handler: ApiUtil = ApiUtil(props.get('api_url'), props.get('api_client'), props.get('api_secret'))
-        self.max_req_attempts: int = props.get('retry_attempts')
+        self.max_req_attempts: int = int(props.get('retry_attempts'))
     
     def check_if_response_successful(self, response: Response) -> bool:
         """
@@ -41,14 +41,14 @@ class APIHandler:
             logger.error(response.text)
         return response_successful
     
-    def get_next_page(self, response: Response) -> Union[None, Dict[str, Any]]:
+    def get_next_page(self, response: Response) -> Any:
         return self.api_handler.get_next_page(response)
 
     def api_call_with_retries(self,
         url: str,
         method: str,
         payload: Union[Dict[str, Any], None] = None,
-    ) -> Union[Response, None]:
+    ) -> Any:
         """
         Pulls data from the UM API Directory, handling errors and retrying if necessary.
 

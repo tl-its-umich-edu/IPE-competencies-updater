@@ -1,28 +1,27 @@
 import os, sys
 import logging
-from typing import DefaultDict
+from typing import Any, Dict, Optional, Union
 logger = logging.getLogger(__name__)
 
 class ReadEnvProps:
     def __init__(self):
-        self.env_props: DefaultDict = {}
+        self.env_props: Dict[str, Optional[str]] = dict()
         self._read_env_props()
 
     def _read_env_props(self) -> None:
         logger.debug("Reading environment properties")
         self.env_props['sheet_id'] = os.environ.get('IPE_SHEET_ID')
-        self.env_props['sheet_name'] = os.environ.get('IPE_SHEET_NAME')
         self.env_props['service_account_path'] = os.environ.get('GSERVICE_ACCOUNT_PATH')
         self.env_props['api_client'] = os.environ.get('API_DIRECTORY_CLIENT_ID')
         self.env_props['api_secret'] = os.environ.get('API_DIRECTORY_SECRET')
         self.env_props['api_url'] = os.environ.get('API_DIRECTORY_URL')
-        self.env_props['rubric_id'] = int(os.environ.get('IPE_RUBRIC_ID'))
-        self.env_props['rubric_account_id'] = int(os.environ.get('IPE_RUBRICS_ACCOUNT'))
-        self.env_props['retry_attempts'] = int(os.environ.get('MAX_REQ_ATTEMPTS')) if int(os.environ.get('MAX_REQ_ATTEMPTS')) else 3
+        self.env_props['rubric_id'] = os.environ.get('IPE_RUBRIC_ID')
+        self.env_props['rubric_account_id'] = os.environ.get('IPE_RUBRICS_ACCOUNT')
+        self.env_props['retry_attempts'] = os.environ.get('MAX_REQ_ATTEMPTS')
 
 
 
-    def get_env_props(self) -> DefaultDict[str, str]:
+    def get_env_props(self) -> Dict[str, Optional[str]]:
         logger.debug(self.env_props)
         is_missing_props: bool = False
         for key, value in self.env_props.items():

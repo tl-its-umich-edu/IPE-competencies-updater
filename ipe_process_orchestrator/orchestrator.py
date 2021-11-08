@@ -1,16 +1,18 @@
-import logging, sys
-from typing import Any, Dict
+import logging
+import sys
+from typing import Any, Dict, NoReturn, Optional, Union
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
 from api_handler.api_calls import APIHandler
-from constants import ( COL_COURSE_ID)
+from constants import (COL_COURSE_ID)
 
 
 logger = logging.getLogger(__name__)
+
+
 class IPECompetenciesOrchestrator:
-    
-    
+
     def __init__(self, props, original_df, api_handler) -> None:
         """
         Initialize the orchestrator
@@ -19,9 +21,8 @@ class IPECompetenciesOrchestrator:
         self.props = props
         self.api_handler: APIHandler = api_handler
         self.filter_df_course_ids = pd.DataFrame()
-    
-    
-    def _clean_up_ipe_dataframe(self):
+
+    def _clean_up_ipe_dataframe(self) -> None:
         """
         Clean up the dataframe
         1. leading and trailing spaces df.columns
@@ -36,31 +37,35 @@ class IPECompetenciesOrchestrator:
         except Exception as e:
             logger.error(f'Error in clean_up_ipe_dataframe: {e}')
             sys.exit(1)
-    
-    def _create_delete_assignment(self, course) -> str:
+
+    def _create_delete_assignment(self, course: pd.Series) -> Union[NoReturn, str]:
         """
         Create the new IPE assignment if such assignment does not exist or delete the existing one if it exists. This action
         is as a result of copied course and so delete the existing assignment is the best option.
         """
         course_id = course[COL_COURSE_ID]
         rubric_id = self.props['rubric_id']
-        assignment_flow = IPEAssignmentFlow(self.api_handler, course_id, rubric_id)
+        assignment_flow = IPEAssignmentFlow(
+            self.api_handler, course_id, rubric_id)
         try:
-            assignment_id: int = assignment_flow.start_assignment_flow()
+            assignment_id: str = assignment_flow.start_assignment_flow()
             return assignment_id
         except Exception as e:
             raise e
-    
-    def start_competencies_assigning_process(self, course):
+
+    def start_competencies_assigning_process(self, course: pd.Series) -> None:
+        """
+        First step in the assiging competencies process is to create the asssignment if it does not exist.
+        """
         try:
             assignment_id = self._create_delete_assignment(course)
         except Exception as e:
             logger.error(e)
-    
-    def start_composing_process(self):
+
+    def start_composing_process(self) -> None:
         """
         This is the place where all the IPE process flow will be orchestrated.
         """
         self._clean_up_ipe_dataframe()
-        self.filter_df_course_ids.apply(lambda course: self.start_competencies_assigning_process(course), axis=1)
-        
+        self.filter_df_course_ids.apply(
+            lambda course: self.start_competencies_assigning_process(course), axis=1)

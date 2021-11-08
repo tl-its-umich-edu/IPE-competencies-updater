@@ -1,3 +1,6 @@
-def response_none_check(classname, response, message):
+from typing import Optional
+from requests import Response
+
+def response_none_check(response: Optional[Response], message: str) -> None:
     if response is None:
-        raise Exception(f"{type(classname).__name__}: {message}")
+        raise Exception(message)
