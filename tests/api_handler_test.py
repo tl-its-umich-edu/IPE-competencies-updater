@@ -1,6 +1,6 @@
 import json
 from typing import List
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import MagicMock, patch
 from requests import Response
 from api_handler.api_calls import APIHandler
 from umich_api.api_utils import ApiUtil
