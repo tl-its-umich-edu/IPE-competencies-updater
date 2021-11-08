@@ -1,4 +1,3 @@
-
 import json
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
 from unittest.mock import MagicMock, patch
@@ -128,4 +127,3 @@ def test_empty_assign_grp(ipe_props, api_handler):
         mock_api_call.return_value = response
         ag_list_value = assignment_flow._look_up_ipe_assignment()
     assert 476889 == ag_list_value
-    
