@@ -16,7 +16,6 @@ pytest_plugins = [
 #  session scoped will be used for until the tear down of the test. Props, worksheets and dataframes common to all tests
 
 
-
 @pytest.fixture(scope="session")
 def ipe_props():
     """

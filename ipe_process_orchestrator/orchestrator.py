@@ -8,11 +8,12 @@ from api_handler.api_calls import APIHandler
 from constants import (COL_COURSE_ID)
 import logging, sys
 from typing import Any, Dict
+from typing import Any, Dict, NoReturn, Optional, Union
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
 from api_handler.api_calls import APIHandler
-from constants import ( COL_COURSE_ID)
+from constants import (COL_COURSE_ID)
 
 
 logger = logging.getLogger(__name__)
@@ -28,9 +29,7 @@ class IPECompetenciesOrchestrator:
         self.api_handler: APIHandler = api_handler
         self.filter_df_course_ids = pd.DataFrame()
 
-    
-    
-    def _clean_up_ipe_dataframe(self):
+    def _clean_up_ipe_dataframe(self) -> None:
         """
         Clean up the dataframe
         1. leading and trailing spaces df.columns
