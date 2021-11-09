@@ -10,13 +10,6 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 
-def test_worksheet(ipe_workbook: List):
-    """
-    Tesing the worksheet return will correct rows
-    """
-    assert len(ipe_workbook) == 167
-
-
 def test_df_column_whitespaces(worksheet_columns_with_whitespace: pd.Index, worksheet_columns: List):
     """
     Testing dataframe columns will always be no leading and trailing whitespaces
@@ -35,12 +28,12 @@ def test_non_course_id_clean_up(ipe_ws_df: pd.DataFrame):
     assert(all(isinstance(x, int) for x in course_list_after_clean_up))
 
 
-def test_clean_up_df(ipe_ws_df: pd.DataFrame, ipe_props: ReadEnvProps):
+def test_clean_up_df(dummy_df: pd.DataFrame, ipe_props: ReadEnvProps):
     """
     Test to ensure the original and cleaned up dataframe what we expect. The original dataframe has a lot of empty values and we want to ensure that 
     the cleaned up dataframe has no empty values. still should hold all the gsheets data
     """
-    orc = IPECompetenciesOrchestrator(ipe_props, ipe_ws_df, None)
+    orc = IPECompetenciesOrchestrator(ipe_props, dummy_df, None)
     orc._clean_up_ipe_dataframe()
-    assert orc.orginal_df.shape[0] == 167
-    assert orc.filter_df_course_ids.shape[0] == 71
+    assert orc.orginal_df.shape[0] == 7
+    assert orc.filter_df_course_ids.shape[0] == 5
