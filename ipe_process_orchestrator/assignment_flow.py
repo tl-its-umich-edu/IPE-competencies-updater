@@ -30,13 +30,13 @@ class IPEAssignmentFlow:
         lookup_ag_resp: Optional[Response] = self.api_handler.api_call_with_retries(
             lookup_ag_url, 'GET', lookup_ag_payload)
 
-        message: str = f'Error looking up assignment group {ASSIGNMENT_GROUP_NAME} with assignment name {ASSIGNMENT_NAME} for course failed {self.course_id}'
-        response_none_check(lookup_ag_resp, message) 
+        err_msg: str = f"Error looking up assignment group '{ASSIGNMENT_GROUP_NAME}' with assignment name '{ASSIGNMENT_NAME}' for course failed {self.course_id}"
+        response_none_check(lookup_ag_resp, err_msg) 
 
         lookup_ag_resp_json: List[Dict[str, Any]] = json.loads(lookup_ag_resp.text) #type: ignore
         ag_list: List[int] = list()
         for ag in lookup_ag_resp_json:
-            if ag['name'].strip() == ASSIGNMENT_GROUP_NAME and len(ag['assignments']) > 0:
+            if ag['name'].strip() == ASSIGNMENT_GROUP_NAME:
                 for assignment in ag['assignments']:
                     if assignment['name'].strip() == ASSIGNMENT_NAME:
                         self._delete_assignment(assignment['id'])
@@ -51,8 +51,8 @@ class IPEAssignmentFlow:
         delete_assignment_resp: Optional[Response] = self.api_handler.api_call_with_retries(
             delete_assignment_url, 'DELETE')
 
-        message: str = f'Error deleting assignment {assignment_id} for course failed {self.course_id}'
-        response_none_check(delete_assignment_resp, message)
+        err_msg: str = f'Error deleting assignment {assignment_id} for course failed {self.course_id}'
+        response_none_check(delete_assignment_resp, err_msg)
 
         logging.info(
             f'Deleted assignment: {assignment_id} for course: {self.course_id}')
@@ -66,8 +66,8 @@ class IPEAssignmentFlow:
         ag_resp: Optional[Response] = self.api_handler.api_call_with_retries(
             assignment_group_creation_url, 'POST', ag_payload)
 
-        message: str = f'Error creating assignment group for course failed {self.course_id}'
-        response_none_check(ag_resp, message)
+        err_msg: str = f'Error creating assignment group for course failed {self.course_id}'
+        response_none_check(ag_resp, err_msg)
 
         assignment_group_id: int = json.loads(ag_resp.text)['id'] #type: ignore
         logger.info(
@@ -92,8 +92,8 @@ class IPEAssignmentFlow:
         assignment_resp: Optional[Response] = self.api_handler.api_call_with_retries(
             assignment_creation_url, 'POST', assignment_payload)
 
-        message: str = f'Error creating assignment for course {self.course_id} failed'
-        response_none_check(assignment_resp, message)
+        err_msg: str = f'Error creating assignment for course {self.course_id} failed'
+        response_none_check(assignment_resp, err_msg)
 
         assignment_id: int = json.loads(assignment_resp.text)['id'] #type: ignore
         logger.info(
@@ -114,8 +114,8 @@ class IPEAssignmentFlow:
         rubrics_resp: Optional[Response] = self.api_handler.api_call_with_retries(
             rubrics_creation_url, 'POST', rubrics_payload)
 
-        message: str = f"Error assigning rubrics {self.rubric_id} for assignment {assignment_id} for course failed {self.course_id}"
-        response_none_check(rubrics_resp, message)
+        err_msg: str = f"Error assigning rubrics {self.rubric_id} for assignment {assignment_id} for course failed {self.course_id}"
+        response_none_check(rubrics_resp, err_msg)
 
         logger.info(f'Rubrics {self.rubric_id} is assigned to assignment {assignment_id} in courses {self.course_id}')
 
