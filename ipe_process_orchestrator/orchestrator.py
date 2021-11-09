@@ -4,6 +4,7 @@ from typing import NoReturn, Union
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
+from ipe_process_orchestrator.rubric_data import IPERubricSimplified
 from api_handler.api_calls import APIHandler
 from constants import (COL_COURSE_ID)
 import logging, sys
@@ -59,6 +60,20 @@ class IPECompetenciesOrchestrator:
             return assignment_id
         except Exception as e:
             raise e
+
+    def getting_rubrics(self):
+        """
+        Get the rubric data from the API
+        """
+        try:
+            rubric_account_id: int = self.props['rubric_account_id']
+            rubric_id: int = self.props['rubric_id']
+            rubric_data = IPERubricSimplified(
+                self.api_handler, rubric_account_id, rubric_id).fetch_rubric_api()
+            return rubric_data
+        except Exception as e:
+            logger.error(f'Error in getting_rubrics: {e}')
+            sys.exit(1)
 
     def start_competencies_assigning_process(self, course: pd.Series) -> None:
         """
