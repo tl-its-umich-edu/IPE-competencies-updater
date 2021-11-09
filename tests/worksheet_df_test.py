@@ -36,4 +36,8 @@ def test_clean_up_df(dummy_df: pd.DataFrame, ipe_props: ReadEnvProps):
     orc = IPECompetenciesOrchestrator(ipe_props, dummy_df, None)
     orc._clean_up_ipe_dataframe()
     assert orc.orginal_df.shape[0] == 7
+<<<<<<< HEAD
     assert orc.filter_df_course_ids.shape[0] == 5
+=======
+    assert orc.filter_df_course_ids.shape[0] == 5
+>>>>>>> dataframe test with mock data
