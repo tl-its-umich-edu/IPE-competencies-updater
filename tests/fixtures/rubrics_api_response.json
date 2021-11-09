@@ -1,0 +1,272 @@
+{
+  "id": 76864,
+  "context_id": 1245,
+  "context_type": "Account",
+  "data": [
+    {
+      "description": "Dosage (contact hours)",
+      "long_description": "",
+      "points": 100.0,
+      "id": "_3104",
+      "criterion_use_range": true,
+      "ratings": [
+        {
+          "description": "Full \"dose\"",
+          "long_description": "Enter contact hours associated with IPE competencies achieved in this IPE experience",
+          "points": 100.0,
+          "criterion_id": "_3104",
+          "id": "blank"
+        },
+        {
+          "description": "No \"dose\"",
+          "long_description": "No IPE competencies are associated with this IPE experience",
+          "points": 0.0,
+          "criterion_id": "_3104",
+          "id": "blank_2"
+        }
+      ]
+    },
+    {
+      "description": "Intercultural Humility",
+      "points": 5.0,
+      "id": "76864_390",
+      "criterion_use_range": false,
+      "long_description": "<p><span>Acquire self-awareness and recognition of one’s own beliefs, biases, and behaviors that impact all aspects of team-based patient-centered care and population health, resulting in the ability to customize services when working with diverse individuals or populations.</span></p>",
+      "learning_outcome_id": 9499,
+      "mastery_points": 3.0,
+      "ignore_for_scoring": false,
+      "ratings": [
+        {
+          "description": "Practice",
+          "long_description": "",
+          "points": 5.0,
+          "criterion_id": "76864_390",
+          "id": "76864_8410"
+        },
+        {
+          "description": "Reinforce",
+          "long_description": "",
+          "points": 3.0,
+          "criterion_id": "76864_390",
+          "id": "76864_5864"
+        },
+        {
+          "description": "Introduce",
+          "long_description": "",
+          "points": 1.0,
+          "criterion_id": "76864_390",
+          "id": "76864_7608"
+        },
+        {
+          "description": "Does Not Meet Competency",
+          "long_description": "",
+          "points": 0.5,
+          "criterion_id": "76864_390",
+          "id": "76864_3977"
+        },
+        {
+          "description": "N/A",
+          "long_description": "",
+          "points": 0.0,
+          "criterion_id": "76864_390",
+          "id": "76864_5328"
+        }
+      ]
+    },
+    {
+      "description": "Interprofessional Communication",
+      "points": 5.0,
+      "id": "76864_6556",
+      "criterion_use_range": false,
+      "long_description": "<p>Communicate with patients, families, communities, and professionals in health and other fields in a responsive and responsible manner that supports a team approach to the promotion and maintenance of health and treatment of disease.</p>",
+      "learning_outcome_id": 9500,
+      "mastery_points": 3.0,
+      "ignore_for_scoring": false,
+      "ratings": [
+        {
+          "description": "Practice",
+          "long_description": "",
+          "points": 5.0,
+          "criterion_id": "76864_6556",
+          "id": "76864_1420"
+        },
+        {
+          "description": "Reinforce",
+          "long_description": "",
+          "points": 3.0,
+          "criterion_id": "76864_6556",
+          "id": "76864_7059"
+        },
+        {
+          "description": "Introduce",
+          "long_description": "",
+          "points": 1.0,
+          "criterion_id": "76864_6556",
+          "id": "76864_8821"
+        },
+        {
+          "description": "Does Not Meet Competency",
+          "long_description": "",
+          "points": 0.5,
+          "criterion_id": "76864_6556",
+          "id": "76864_5932"
+        },
+        {
+          "description": "N/A",
+          "long_description": "",
+          "points": 0.0,
+          "criterion_id": "76864_6556",
+          "id": "76864_4759"
+        }
+      ]
+    },
+    {
+      "description": "Roles/Responsibilities",
+      "points": 5.0,
+      "id": "76864_8770",
+      "criterion_use_range": false,
+      "long_description": "<p>Use the knowledge of one’s own role and those of other professions to appropriately assess and address the healthcare needs of patients and to promote and advance the health of populations.</p>",
+      "learning_outcome_id": 9501,
+      "mastery_points": 3.0,
+      "ignore_for_scoring": false,
+      "ratings": [
+        {
+          "description": "Practice",
+          "long_description": "",
+          "points": 5.0,
+          "criterion_id": "76864_8770",
+          "id": "76864_8566"
+        },
+        {
+          "description": "Reinforce",
+          "long_description": "",
+          "points": 3.0,
+          "criterion_id": "76864_8770",
+          "id": "76864_3364"
+        },
+        {
+          "description": "Introduce",
+          "long_description": "",
+          "points": 1.0,
+          "criterion_id": "76864_8770",
+          "id": "76864_6479"
+        },
+        {
+          "description": "Does Not Meet Competency",
+          "long_description": "",
+          "points": 0.5,
+          "criterion_id": "76864_8770",
+          "id": "76864_3581"
+        },
+        {
+          "description": "N/A",
+          "long_description": "",
+          "points": 0.0,
+          "criterion_id": "76864_8770",
+          "id": "76864_799"
+        }
+      ]
+    },
+    {
+      "description": "Team/Teamwork",
+      "points": 5.0,
+      "id": "76864_2231",
+      "criterion_use_range": false,
+      "long_description": "<p><span>&nbsp;</span>Apply relationship-building values and the principles of team dynamics to perform effectively in different team roles to plan, deliver, and evaluate patient/population-centered care and population health programs and policies that are safe, timely, efficient, effective, and equitable.</p>",
+      "learning_outcome_id": 9502,
+      "mastery_points": 3.0,
+      "ignore_for_scoring": false,
+      "ratings": [
+        {
+          "description": "Practice",
+          "long_description": "",
+          "points": 5.0,
+          "criterion_id": "76864_2231",
+          "id": "76864_6030"
+        },
+        {
+          "description": "Reinforce",
+          "long_description": "",
+          "points": 3.0,
+          "criterion_id": "76864_2231",
+          "id": "76864_4355"
+        },
+        {
+          "description": "Introduce",
+          "long_description": "",
+          "points": 1.0,
+          "criterion_id": "76864_2231",
+          "id": "76864_3528"
+        },
+        {
+          "description": "Does Not Meet Competency",
+          "long_description": "",
+          "points": 0.5,
+          "criterion_id": "76864_2231",
+          "id": "76864_2006"
+        },
+        {
+          "description": "N/A",
+          "long_description": "",
+          "points": 0.0,
+          "criterion_id": "76864_2231",
+          "id": "76864_5964"
+        }
+      ]
+    },
+    {
+      "description": "Values/Ethics",
+      "points": 5.0,
+      "id": "76864_7039",
+      "criterion_use_range": false,
+      "long_description": "<p>Ability to work with individuals of other professions to maintain a climate of mutual respect and shared values.</p>",
+      "learning_outcome_id": 9503,
+      "mastery_points": 3.0,
+      "ignore_for_scoring": false,
+      "ratings": [
+        {
+          "description": "Practice",
+          "long_description": "",
+          "points": 5.0,
+          "criterion_id": "76864_7039",
+          "id": "76864_3686"
+        },
+        {
+          "description": "Reinforce",
+          "long_description": "",
+          "points": 3.0,
+          "criterion_id": "76864_7039",
+          "id": "76864_4779"
+        },
+        {
+          "description": "Introduce",
+          "long_description": "",
+          "points": 1.0,
+          "criterion_id": "76864_7039",
+          "id": "76864_3388"
+        },
+        {
+          "description": "Does Not Meet Competency",
+          "long_description": "",
+          "points": 0.5,
+          "criterion_id": "76864_7039",
+          "id": "76864_8567"
+        },
+        {
+          "description": "N/A",
+          "long_description": "",
+          "points": 0.0,
+          "criterion_id": "76864_7039",
+          "id": "76864_6509"
+        }
+      ]
+    }
+  ],
+  "points_possible": 125.0,
+  "title": "IPE Competencies",
+  "reusable": false,
+  "public": false,
+  "read_only": true,
+  "free_form_criterion_comments": false,
+  "hide_score_total": false
+}
