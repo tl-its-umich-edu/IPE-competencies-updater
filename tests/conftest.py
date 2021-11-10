@@ -10,7 +10,7 @@ from api_handler.api_calls import APIHandler
 # These are test specific to a particular test module
 pytest_plugins = [
     "tests.fixtures.worksheets_columns",
-    "tests.fixtures.dataframe_fake"
+    "tests.fixtures.dataframe_fake",
     "tests.fixtures.rubric_simplified_obj"
 ]
 #  session scoped will be used for until the tear down of the test. Props, worksheets and dataframes common to all tests
