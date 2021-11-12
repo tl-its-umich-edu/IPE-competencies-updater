@@ -1,6 +1,6 @@
 import logging
 import sys
-from typing import NoReturn, Union
+from typing import Any, Dict, NoReturn, Union
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
@@ -83,6 +83,6 @@ class IPECompetenciesOrchestrator:
         This is the place where all the IPE process flow will be orchestrated.
         """
         self._clean_up_ipe_dataframe()
-        rubrics_data: Dict[str, Any] = self.getting_rubrics()
+        rubrics_data: Dict[str, Anqy] = self.getting_rubrics()
         self.filter_df_course_ids.apply(
             lambda course: self.start_competencies_assigning_process(course), axis=1)
