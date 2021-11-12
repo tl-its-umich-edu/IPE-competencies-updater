@@ -7,14 +7,6 @@ from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
 from ipe_process_orchestrator.rubric_data import IPERubricSimplified
 from api_handler.api_calls import APIHandler
 from constants import (COL_COURSE_ID)
-import logging, sys
-from typing import Any, Dict
-from typing import Any, Dict, NoReturn, Optional, Union
-import pandas as pd
-from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id
-from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
-from api_handler.api_calls import APIHandler
-from constants import (COL_COURSE_ID)
 
 
 logger = logging.getLogger(__name__)
