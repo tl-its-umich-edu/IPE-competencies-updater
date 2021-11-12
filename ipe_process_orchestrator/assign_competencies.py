@@ -83,8 +83,8 @@ class IPECompetenciesAssigner:
 
     def get_student_list_to_receive_competencies(self, student_grades) -> List[Dict[str, Any]]:
       """
-      returns the list of students who will receive competencies. If the Criteria is All Enrolled, then all the students will be returned. 
-      If the criteria is 70% grade, then only the students with 70% grade will be returned.
+      returns the list of students who will receive competencies. If the Criteria is `All Enrolled`, then all the students will be returned. 
+      If the criteria is `70% grade`, then only the students with 70% grade will be returned.
       """
       assignment_criteria = self.course[COL_ASSIGNING_LO_CRITERIA]
       if assignment_criteria == AC_ALL_ENROLLED:
