@@ -65,7 +65,7 @@ class IPEAssignmentFlow:
         ag_resp: Optional[Response] = self.api_handler.api_call_with_retries(
             assignment_group_creation_url, 'POST', ag_payload)
 
-        err_msg: str = f'Error creating assignment group {ASSIGNMENT_GROUP_NAME} for course {self.course_id}'
+        err_msg: str = f"Error creating assignment group '{ASSIGNMENT_GROUP_NAME}' for course {self.course_id}"
         response_none_check(ag_resp, err_msg)
 
         assignment_group_id: int = json.loads(ag_resp.text)['id'] #type: ignore
