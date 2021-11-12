@@ -92,4 +92,5 @@ class IPECompetenciesOrchestrator:
         """
         self._clean_up_ipe_dataframe()
         rubrics_data: Dict[str, Any] = self.getting_rubrics()
-        self.filter_df_course_ids.apply(lambda course: self.start_competencies_assigning_process(course, rubrics_data), axis=1)
+        logger.info(f'Rubrics data: {rubrics_data}')
+        self.filter_df_course_ids.apply(lambda course: self.start_competencies_assigning_process(course), axis=1)
