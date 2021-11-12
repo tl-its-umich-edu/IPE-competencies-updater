@@ -33,6 +33,12 @@ def df_filter_course_duplicates(df: pd.DataFrame) -> pd.DataFrame:
     """
     return df.drop_duplicates(subset=[COL_COURSE_ID])
 
+def df_filter_course_duplicates(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Remove duplicate course id's from a dataframe.
+    """
+    return df.drop_duplicates(subset=[COL_COURSE_ID])
+
 def current_time()-> str:
     """
     Return current time in format: YYYY-MM-DD HH:MM:SS
