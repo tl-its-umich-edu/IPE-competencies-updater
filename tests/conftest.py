@@ -13,6 +13,8 @@ pytest_plugins = [
     "tests.fixtures.dataframe_fake",
     "tests.fixtures.rubric_simplified_obj"
 ]
+
+
 #  session scoped will be used for until the tear down of the test. Props, worksheets and dataframes common to all tests
 @pytest.fixture(scope="session")
 def ipe_props():
