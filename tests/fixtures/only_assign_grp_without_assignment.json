@@ -1,0 +1,33 @@
+[
+  {
+    "id": 476812,
+    "name": "Dummy",
+    "position": 1,
+    "group_weight": 0.0,
+    "assignments": []
+  },
+  {
+    "id": 476889,
+    "name": "IPE Competencies",
+    "position": 2,
+    "group_weight": 0.0,
+    "assignments": [
+      {
+        "id": 1538304,
+        "points_possible": 0.0,
+        "grading_type": "points",
+        "assignment_group_id": 476889,
+        "course_id": 403334,
+        "name": "Some assignment"
+      },
+      {
+        "id": 1538305,
+        "points_possible": 0.0,
+        "grading_type": "points",
+        "assignment_group_id": 476889,
+        "course_id": 403334,
+        "name": "Some assignment second"
+      }
+    ]
+  }
+]

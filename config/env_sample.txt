@@ -1,6 +1,14 @@
-# This is the id after the /spreadsheets/d/ and before /edit in the sheets URL
-IPE_SHEET_ID=<replace-with-Google-sheets-ID>
-IPE_SHEET_NAME=Offerings
+# This is the id after the /spreadsheets/d/ and before /edit
+IPE_SHEET_ID=<replace-with-Gheets-ID>
 
 GSERVICE_ACCOUNT_PATH=absolute-path-to-google-service-account-file
+
+API_DIRECTORY_CLIENT_ID=
+API_DIRECTORY_SECRET=
+API_DIRECTORY_URL=
+# This is the rubrics that contain IPE competencies defined as Learning outcomes. This cannot be changed once it is assigned to student submissions.
+IPE_RUBRIC_ID=76864
+IPE_RUBRICS_ACCOUNT=1245
+MAX_REQ_ATTEMPTS = 3
+
 LOG_LEVEL=DEBUG

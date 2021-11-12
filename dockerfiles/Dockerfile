@@ -3,7 +3,7 @@ FROM python:3.9-slim
 # Installs needed Linux packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    build-essential git netcat && \
+    build-essential git && \
     apt-get clean -y
 
 # Keeps Python from generating .pyc files in the container
