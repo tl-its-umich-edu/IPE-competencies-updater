@@ -1,6 +1,6 @@
 import logging
 import sys
-from typing import Any, Dict, NoReturn, Optional, Union
+from typing import NoReturn, Union
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
@@ -56,6 +56,7 @@ class IPECompetenciesOrchestrator:
     def start_competencies_assigning_process(self, course: pd.Series) -> None:
         """
         First step in the assiging competencies process is to create the asssignment if it does not exist.
+        Second step is to assign competencies to the assignment.
         """
         try:
             assignment_id = self._create_delete_assignment(course)

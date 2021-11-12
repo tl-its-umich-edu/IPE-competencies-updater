@@ -1,6 +1,6 @@
 import json, logging
 from json.decoder import JSONDecodeError
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Union, Optional
 from constants import (
     CANVAS_SCOPE
 )
@@ -11,9 +11,9 @@ from umich_api.api_utils import ApiUtil
 
 logger = logging.getLogger(__name__)
 class APIHandler:
-    def __init__(self, props) -> None:
+    def __init__(self, props: Dict[str, Optional[str]]) -> None:
         self.api_handler: ApiUtil = ApiUtil(props.get('api_url'), props.get('api_client'), props.get('api_secret'))
-        self.max_req_attempts: int = int(props.get('retry_attempts'))
+        self.max_req_attempts: int = int(props.get('retry_attempts')) #type: ignore
     
     def check_if_response_successful(self, response: Response) -> bool:
         """
@@ -53,18 +53,12 @@ class APIHandler:
         Pulls data from the UM API Directory, handling errors and retrying if necessary.
 
         When the maximum number of request attempts is reached, the function logs an error and returns None.
-        :param api_handler: Instance of ApiUtil
-        :type api_handler: ApiUtil
         :param url: URL ending for request
         :type url: string
-        :param subscription: Name of the subscription or scope the request should use
-        :type subscription: string
         :param method: Request method that should be used (e.g. "GET", "PUT")
         :type method: string
         :param payload: Dictionary to include in the request body
         :type payload: Dictionary with string keys or None, optional
-        :param max_req_attempts: Number of request attempts to make before logging an error
-        :type max_req_attempts: int, optional
         :return: Either a Response object or None
         :rtype: Response or None
         """

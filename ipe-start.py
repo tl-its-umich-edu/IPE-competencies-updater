@@ -1,4 +1,5 @@
 import logging, os
+from typing import Dict, Optional
 import pandas as pd
 from dotenv import load_dotenv
 from read_env_props import ReadEnvProps
@@ -14,7 +15,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=os.getenv('LOG_LEVEL') if os.getenv('LOG_LEVEL') else 'INFO', format='%(name)s - %(levelname)s - %(message)s')
 def main():
     logger.info("IPE Process Starting....")
-    props: ReadEnvProps =  ReadEnvProps().get_env_props()
+    props: Dict[str, Optional[str]] =  ReadEnvProps().get_env_props()
     ipeData: GetIPEDataFromSheets=GetIPEDataFromSheets(props)
     worksheet: Worksheet = ipeData.get_data()
     worksheet_dataframe: pd.DataFrame  = pd.DataFrame(worksheet.get_all_records())

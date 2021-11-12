@@ -1,7 +1,6 @@
 import logging
-import sys
 import json
-from typing import Any, Dict, List, NoReturn, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 from requests.models import Response
 from constants import (
     CANVAS_URL_BEGIN, ASSIGNMENT_GROUP_NAME, ASSIGNMENT_NAME)
@@ -30,7 +29,7 @@ class IPEAssignmentFlow:
         lookup_ag_resp: Optional[Response] = self.api_handler.api_call_with_retries(
             lookup_ag_url, 'GET', lookup_ag_payload)
 
-        err_msg: str = f"Error looking up assignment group '{ASSIGNMENT_GROUP_NAME}' with assignment name '{ASSIGNMENT_NAME}' for course failed {self.course_id}"
+        err_msg: str = f"Error looking up assignment group '{ASSIGNMENT_GROUP_NAME}' with assignment name '{ASSIGNMENT_NAME}' for course {self.course_id} failed"
         response_none_check(lookup_ag_resp, err_msg) 
 
         lookup_ag_resp_json: List[Dict[str, Any]] = json.loads(lookup_ag_resp.text) #type: ignore
@@ -51,7 +50,7 @@ class IPEAssignmentFlow:
         delete_assignment_resp: Optional[Response] = self.api_handler.api_call_with_retries(
             delete_assignment_url, 'DELETE')
 
-        err_msg: str = f'Error deleting assignment {assignment_id} for course failed {self.course_id}'
+        err_msg: str = f'Error deleting assignment {assignment_id} for course {self.course_id}'
         response_none_check(delete_assignment_resp, err_msg)
 
         logging.info(
@@ -66,7 +65,7 @@ class IPEAssignmentFlow:
         ag_resp: Optional[Response] = self.api_handler.api_call_with_retries(
             assignment_group_creation_url, 'POST', ag_payload)
 
-        err_msg: str = f'Error creating assignment group for course failed {self.course_id}'
+        err_msg: str = f'Error creating assignment group {ASSIGNMENT_GROUP_NAME} for course {self.course_id}'
         response_none_check(ag_resp, err_msg)
 
         assignment_group_id: int = json.loads(ag_resp.text)['id'] #type: ignore
