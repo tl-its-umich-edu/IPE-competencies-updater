@@ -1,46 +1,163 @@
-import pytest, json
+import json, random
+from typing import List
 import pandas as pd
+from unittest.mock import MagicMock, patch
+from requests import Response
+from api_handler.api_calls import APIHandler
 from ipe_process_orchestrator.assign_competencies import IPECompetenciesAssigner
+from constants import COL_ASSIGNING_LO_CRITERIA, AC_ALL_ENROLLED, CANVAS_URL_BEGIN
 
-@pytest.fixture
-def single_ipe_offering_with_all_enrolled_criteria():
-  course = {'Offering Name': 'Teams & Teamwork Module', 'Offering ID': '2018-017', 'Offering-instance ID': '2018-017-05-W21', 
-  'udp_term_name': 'Winter 2021', 'Year': 2021, 'Term': 'Winter', 'UM Term Code': 'WN 2021', 
-  'Description': 'The module is structured so that students will complete online reading/self-assessment in week 1.', 
-  'Lead Faculty Member 1': 'Jane Doe', 'Lead Faculty Member 2': 'JohnDoe', 'Lead Faculty 1 School': 'Dentistry', 'Lead Faculty 2 School': 'Public Health', 
-  'Lead Faculty 1 unique name': 'JaDoe', 'Lead Faculty 2 unique name': 'Jdoe', 
-  'Format': 'Online', 'Instructional Team\\n(SEE LOOKUP TABLE)': '', 'Program offering to students\\n(SEE LOOKUP TABLE)': '', 
-  'Course #s (if applicable)': '', 'Window used': 'None', 'IPE Assessments': 'SPICE-R2 ', 'Canvas Site or Shell Course': '', 
-  'Canvas Course ID': 448447, 'Roles/Responsibilities': 'N/A', 'Interprofessional Communication': 'N/A', 'Team/Teamwork': 'Introduce', 'Values/Ethics': 'N/A', 'Intercultural Humility': 'N/A', 'Dosage (contact hours)': 4, 
-  'Criteria for Assigning Outcomes in Canvas': 'Passing - 70% or Higher', 'Notes': '', 'When does script run? (Feb, June, Oct)': 'June', 'Script Run?': ''}
-  return course
-
-@pytest.fixture
-def ipe_assigner_class(api_handler, single_ipe_offering_with_all_enrolled_criteria) -> IPECompetenciesAssigner:
-  with open('tests/fixtures/rubrics_api_response.json','r') as f:
-        response_json = json.loads(f.read())
-  course_series = pd.Series(single_ipe_offering_with_all_enrolled_criteria)
-  return IPECompetenciesAssigner(api_handler, '12345', course_series, response_json)
-
-@pytest.fixture
-def student_data():
-  students_grades = [{'student_canvas_id': 136945, 'student_name': 'Student User1', 'grade': 62.59},
-  {'student_canvas_id': 136946, 'student_name': 'Student User2', 'grade': 70.00},
-  {'student_canvas_id': 136947, 'student_name': 'Student User3', 'grade': 69.99},
-  {'student_canvas_id': 136948, 'student_name': 'Student User4', 'grade': 80.59},
-  {'student_canvas_id': 136949, 'student_name': 'Student User5', 'grade': 50.59},
-  {'student_canvas_id': 136950, 'student_name': 'Student User6', 'grade': 60.59},
-  {'student_canvas_id': 136951, 'student_name': 'Student User7', 'grade': 70.59},
-  {'student_canvas_id': 136952, 'student_name': 'Student User8', 'grade': 90.10},
-  {'student_canvas_id': 136953, 'student_name': 'Student User9', 'grade': 100.59},
-  {'student_canvas_id': 136954, 'student_name': 'Student User10', 'grade': 200.59}]
-  return students_grades
-
-
-def test_right_student_list_returned_based_assignment_criteria(api_handler, rubric_simple, student_data):
-  course = pd.Series({'term': 1234, 'course': 'somethig', 'instructor': 'somebody'})
-  comp_assigner = IPECompetenciesAssigner(api_handler, '12345', course, rubric_simple)
+def test_student_data_with_70_percent_grade(api_handler, single_ipe_offering, student_data):
+  """
+  This should return only the students with a grade of 70% or higher
+  
+  params are pytest fixtures taken from fixtures folder and from these file under it competencies_data.py. 
+  api_handler from  conftest.py
+  """
+  course = pd.Series(single_ipe_offering)
+  comp_assigner = IPECompetenciesAssigner(api_handler, '448447', course, {})
   students_grades_actual= comp_assigner.get_student_list_to_receive_competencies(student_data)
-  assert 7 == len(students_grades_actual)
+  assert 6 == len(students_grades_actual)
+
+def test_student_data_with_all_enrolled(api_handler, single_ipe_offering, student_data):
+  """
+  This should return all the students in the course
+  
+  params are pytest fixtures taken from fixtures folder and from these file under it competencies_data.py. 
+  api_handler from  conftest.py
+  """
+  single_ipe_offering[COL_ASSIGNING_LO_CRITERIA] = AC_ALL_ENROLLED
+  course = pd.Series(single_ipe_offering)
+  comp_assigner = IPECompetenciesAssigner(api_handler, '448447', course, {})
+  students_grades_actual= comp_assigner.get_student_list_to_receive_competencies(student_data)
+  assert 10 == len(students_grades_actual)
+
+def test_competencies_payload_based_according_to_course(api_handler, single_ipe_offering, rubric_simple, competencies_payload):
+  """
+  Correct competencies should be returned based on the course and assigned to the students
+  
+  params are pytest fixtures taken from fixtures folder and from these file under it competencies_data.py, rubric_simplified_obj.py. 
+  api_handler from  conftest.py
+  """
+  course = pd.Series(single_ipe_offering)
+  comp_assigner = IPECompetenciesAssigner(api_handler, '448447122', course, rubric_simple)
+  payload_actual = comp_assigner.get_competency_payload()
+  assert payload_actual == competencies_payload
+
+def test_competencies_payload_with_no_dosage(api_handler, single_ipe_offering, rubric_simple, competencies_payload2):
+  """
+  This tests when doasage is not given then the payload will return no dose values
+  
+  params are pytest fixtures taken from fixtures folder and from these file under it competencies_data.py, rubric_simplified_obj.py. 
+  api_handler from  conftest.py
+  """
+  single_ipe_offering['Dosage (contact hours)'] = ''
+  single_ipe_offering['Intercultural Humility'] = 'Practice'
+  single_ipe_offering['Interprofessional Communication'] = 'Reinforce'
+  single_ipe_offering['Roles/Responsibilities'] = 'Practice'
+  single_ipe_offering['Team/Teamwork'] = 'Introduce'
+  single_ipe_offering['Values/Ethics'] = 'N/A'
+
+  course = pd.Series(single_ipe_offering)
+  comp_assigner = IPECompetenciesAssigner(api_handler, '448447122', course, rubric_simple)
+  payload_actual = comp_assigner.get_competency_payload()
+  assert payload_actual == competencies_payload2
+
+def test_more_enrollments_are_fetched(api_handler, ipe_props, enrollment_response, single_ipe_offering):
+  """
+  This tests make sure the pagination works as expected when fetching more enrollments
+  The Real API will return 100 for first call and paged after. Test is written to mimic paging workflow but actually returing
+  4 enrollments in first call and 6 in next page.
+  
+  params are pytest fixtures taken from fixtures folder and from these file under it competencies_data.py. 
+  api_handler from  conftest.py
+   
+  """
+  url_partial = f'{CANVAS_URL_BEGIN}/courses/11111/enrollments'
+  full_url = '/'.join([ipe_props.get('api_url'), url_partial])
+  enrollment_resp1: MagicMock = MagicMock(
+        spec=Response,
+        status_code=200,
+        ok=True,
+        text=json.dumps(enrollment_response[:4]),
+        url=full_url
+    )
+  enrollment_resp2: MagicMock = MagicMock(
+    spec=Response,
+    status_code=200,
+    ok=True,
+    text=json.dumps(enrollment_response[4:10]),
+    url=full_url
+  )
+  next_page1_response = {'state[]': ['active'], 'type[]': ['StudentEnrollment'], 'page': ['bookmark:WyJTd'], 'per_page': ['100']}
+  next_page2_response = None
+
+  with patch.object(APIHandler, 'api_call_with_retries',autospec=True) as mock_enrollment:
+    with patch.object(APIHandler, 'get_next_page',autospec=True) as mock_next_page:
+      mock_enrollment.side_effect = [enrollment_resp1, enrollment_resp2]
+      mock_next_page.side_effect = [next_page1_response, next_page2_response]
+      course = pd.Series(single_ipe_offering)
+      students_grades_actual = IPECompetenciesAssigner(api_handler, '448447122', course, {}).get_student_list_with_course_grades()
+  assert len(students_grades_actual) == 10
+  assert mock_enrollment.call_count == 2
+  assert mock_next_page.call_count == 2
+
+def test_competencies_assigned_to_students_with_all_success(ipe_props, student_data, api_handler, single_ipe_offering, rubric_simple):
+  """
+  This tests that the competencies are assigned to the students
+  
+  params are pytest fixtures taken from fixtures folder and from these file under it competencies_data.py, rubric_simplified_obj.py. 
+  api_handler from  conftest.py
+  """
+  url_partial = f'{CANVAS_URL_BEGIN}/courses/11111/enrollments'
+  full_url = '/'.join([ipe_props.get('api_url'), url_partial])
+  course = pd.Series(single_ipe_offering)
+  comp_assigner = IPECompetenciesAssigner(api_handler, '448447122', course, rubric_simple)
+  resp_mocks: List[MagicMock] = [
+          MagicMock(
+              spec=Response, status_code=200, ok=True, text=json.dumps({'success': True}), url=full_url
+          )
+          for i in range(len(student_data))
+      ]
+
+  with patch.object(APIHandler, 'api_call_with_retries', autospec=True) as mock_competencies_assigning:
+    mock_competencies_assigning.side_effect = resp_mocks
+    comp_assigner.assign_competancies(student_data)
+  # since the criteria for competencies assigned is 70% or greater so the only 6 api call are made snce student_data has 6 students > than 70%
+  assert mock_competencies_assigning.call_count == 6
+
+def test_competencies_assigned_to_students_with_few_failures(ipe_props, student_data, api_handler, single_ipe_offering, rubric_simple):
+  """
+  This tests that the competencies loop for assigning to the students continues even if some competencies are not assigned. 
+  We don't want to stop the loop if one competency fails to assign. 
+  
+  params are pytest fixtures taken from fixtures folder and from these file under it competencies_data.py, rubric_simplified_obj.py. 
+  api_handler from  conftest.py
+  """
+  url_partial = f'{CANVAS_URL_BEGIN}/courses/11111/enrollments'
+  full_url = '/'.join([ipe_props.get('api_url'), url_partial])
+  single_ipe_offering[COL_ASSIGNING_LO_CRITERIA] = AC_ALL_ENROLLED
+  course = pd.Series(single_ipe_offering)
+  comp_assigner = IPECompetenciesAssigner(api_handler, '448447122', course, rubric_simple)
+  resp_mocks: List[MagicMock] = [
+          MagicMock(
+              spec=Response, status_code=200, ok=True, text=json.dumps({'success': True}), url=full_url
+          )
+          for i in range(len(student_data)-1)
+      ]
+  resp_mocks.append(None)
+  
+  random.shuffle(resp_mocks)
+
+  with patch.object(APIHandler, 'api_call_with_retries', autospec=True) as mock_competencies_assigning:
+    mock_competencies_assigning.side_effect = resp_mocks
+    comp_assigner.assign_competancies(student_data)
+  assert mock_competencies_assigning.call_count == 10
+
+    
+
+
+
+
 
 

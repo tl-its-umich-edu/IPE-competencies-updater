@@ -83,3 +83,53 @@ def test_api_retry_if_failure(ipe_props, api_handler: APIHandler):
           url_partial, 'GET', {})
   assert mock_api_call.call_count == 3
   assert response == None
+
+
+def test_api_for_next_page(ipe_props, api_handler: APIHandler):
+  """next page result is retured by APIhandler"""
+  url_partial = f'{CANVAS_URL_BEGIN}/courses/11111/enrollments'
+  full_url = '/'.join([ipe_props.get('api_url'), url_partial])
+
+  mock_resp: MagicMock = MagicMock(
+        spec=Response,
+        status_code=200,
+        ok=True,
+        text=json.dumps({'success': True}),
+        url=full_url
+    )
+  mock_next_page_resp = {'state[]': ['active'], 'type[]': ['StudentEnrollment'], 'page': ['bookmark:WyJTd'], 'per_page': ['100']}
+  
+  with patch.object(ApiUtil, 'get_next_page', autospec=True) as mock_api_call:
+    mock_api_call.return_value = mock_next_page_resp
+    page_info_actual = api_handler.get_next_page(mock_resp)
+
+  assert page_info_actual == mock_next_page_resp
+
+def test_api_for_no_next_page(ipe_props, api_handler: APIHandler):
+    """
+    No next page for the API call
+    """
+    url_partial = f'{CANVAS_URL_BEGIN}/courses/11111/enrollments'
+    full_url = '/'.join([ipe_props.get('api_url'), url_partial])
+    mock_resp: MagicMock = MagicMock(
+        spec=Response,
+        status_code=200,
+        ok=True,
+        text=json.dumps({'success': True}),
+        url=full_url
+    )
+    mock_next_page_resp = None
+  
+    with patch.object(ApiUtil, 'get_next_page', autospec=True) as mock_api_call:
+        mock_api_call.return_value = mock_next_page_resp
+        page_info_actual = api_handler.get_next_page(mock_resp)
+
+    assert page_info_actual == None
+
+
+
+
+
+  
+
+
