@@ -17,7 +17,7 @@ def test_student_data_with_70_percent_grade(api_handler, single_ipe_offering, st
   course = pd.Series(single_ipe_offering)
   comp_assigner = IPECompetenciesAssigner(api_handler, '448447', course, {})
   students_grades_actual= comp_assigner.get_student_list_to_receive_competencies(student_data)
-  assert 6 == len(students_grades_actual)
+  assert 5 == len(students_grades_actual)
 
 def test_student_data_with_all_enrolled(api_handler, single_ipe_offering, student_data):
   """
@@ -113,18 +113,19 @@ def test_competencies_assigned_to_students_with_all_success(ipe_props, student_d
   full_url = '/'.join([ipe_props.get('api_url'), url_partial])
   course = pd.Series(single_ipe_offering)
   comp_assigner = IPECompetenciesAssigner(api_handler, '448447122', course, rubric_simple)
+  student_data_receiving = comp_assigner.get_student_list_to_receive_competencies(student_data)
   resp_mocks: List[MagicMock] = [
           MagicMock(
               spec=Response, status_code=200, ok=True, text=json.dumps({'success': True}), url=full_url
           )
-          for i in range(len(student_data))
+          for i in range(len(student_data_receiving))
       ]
 
   with patch.object(APIHandler, 'api_call_with_retries', autospec=True) as mock_competencies_assigning:
     mock_competencies_assigning.side_effect = resp_mocks
-    comp_assigner.assign_competancies(student_data)
+    comp_assigner.assign_competancies(student_data_receiving)
   # since the criteria for competencies assigned is 70% or greater so the only 6 api call are made snce student_data has 6 students > than 70%
-  assert mock_competencies_assigning.call_count == 6
+  assert mock_competencies_assigning.call_count == 5
 
 def test_competencies_assigned_to_students_with_few_failures(ipe_props, student_data, api_handler, single_ipe_offering, rubric_simple):
   """
@@ -143,9 +144,9 @@ def test_competencies_assigned_to_students_with_few_failures(ipe_props, student_
           MagicMock(
               spec=Response, status_code=200, ok=True, text=json.dumps({'success': True}), url=full_url
           )
-          for i in range(len(student_data)-1)
+          for i in range(len(student_data)-3)
       ]
-  resp_mocks.append(None)
+  resp_mocks.extend([None,None,None])
   
   random.shuffle(resp_mocks)
 

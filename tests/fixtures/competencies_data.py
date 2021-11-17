@@ -16,7 +16,7 @@ def single_ipe_offering():
 @pytest.fixture
 def student_data():
   return [{'student_canvas_id': 136949, 'student_name': 'Student User5', 'grade': 50.59},
-  {'student_canvas_id': 136950, 'student_name': 'Student User6', 'grade': 60.59},
+  {'student_canvas_id': 136950, 'student_name': 'Student User6', 'grade': None},
   {'student_canvas_id': 136945, 'student_name': 'Student User1', 'grade': 62.59},
   {'student_canvas_id': 136947, 'student_name': 'Student User3', 'grade': 69.99},
   {'student_canvas_id': 136946, 'student_name': 'Student User2', 'grade': 70.00},
@@ -24,7 +24,7 @@ def student_data():
   {'student_canvas_id': 136951, 'student_name': 'Student User7', 'grade': 70.59},
   {'student_canvas_id': 136952, 'student_name': 'Student User8', 'grade': 90.10},
   {'student_canvas_id': 136953, 'student_name': 'Student User9', 'grade': 100.59},
-  {'student_canvas_id': 136954, 'student_name': 'Student User10', 'grade': 200.59}]
+  {'student_canvas_id': 136954, 'student_name': 'Student User10', 'grade': None}]
 
 @pytest.fixture
 def competencies_payload():
