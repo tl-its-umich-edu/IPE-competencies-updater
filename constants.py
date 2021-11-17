@@ -26,8 +26,6 @@ AC_70_PERCENT_GRADE='Passing - 70% or Higher'
 FULL_DOSE = 'Full dose'
 NO_DOSE = 'No dose'
 
-# Assignment Criteria
-
 #Course Percent Value
 COMPETENCY_ASSIGNING_COURSE_GRADE = 70
 

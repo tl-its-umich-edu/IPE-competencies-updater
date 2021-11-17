@@ -11,7 +11,8 @@ from api_handler.api_calls import APIHandler
 pytest_plugins = [
     "tests.fixtures.worksheets_columns",
     "tests.fixtures.dataframe_fake",
-    "tests.fixtures.rubric_simplified_obj"
+    "tests.fixtures.rubric_simplified_obj",
+    "tests.fixtures.competencies_data"
 ]
 
 

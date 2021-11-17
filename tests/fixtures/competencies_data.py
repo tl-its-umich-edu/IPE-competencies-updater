@@ -29,34 +29,34 @@ def student_data():
 @pytest.fixture
 def competencies_payload():
   return {
-    'rubric_assessment[_3104][rating_id]': 'blank',  #Dosage
-    'rubric_assessment[_3104][points]': 4.0, 
-    'rubric_assessment[76864_390][rating_id]': '76864_5328', #Intercultural Humility
-    'rubric_assessment[76864_390][points]': 0.0, 
-    'rubric_assessment[76864_6556][rating_id]': '76864_4759', #Interprofessional Communication
-    'rubric_assessment[76864_6556][points]': 0.0, 
-    'rubric_assessment[76864_8770][rating_id]': '76864_799', #Roles/Responsibilities
-    'rubric_assessment[76864_8770][points]': 0.0, 
-    'rubric_assessment[76864_2231][rating_id]': '76864_3528', #Team/Teamwork
-    'rubric_assessment[76864_2231][points]': 1.0, 
-    'rubric_assessment[76864_7039][rating_id]': '76864_6509', #Values/Ethics
-    'rubric_assessment[76864_7039][points]': 0.0}
+    'rubric_assessment[_123][rating_id]': 'blank',  #Dosage
+    'rubric_assessment[_123][points]': 4.0, 
+    'rubric_assessment[456_345][rating_id]': '_2564', #Intercultural Humility
+    'rubric_assessment[456_345][points]': 0.0, 
+    'rubric_assessment[456_678][rating_id]': '_2569', #Interprofessional Communication
+    'rubric_assessment[456_678][points]': 0.0, 
+    'rubric_assessment[456_901][rating_id]': '_2574', #Roles/Responsibilities
+    'rubric_assessment[456_901][points]': 0.0, 
+    'rubric_assessment[456_902][rating_id]': '_2577', #Team/Teamwork
+    'rubric_assessment[456_902][points]': 1.0, 
+    'rubric_assessment[456_903][rating_id]': '_2584', #Values/Ethics
+    'rubric_assessment[456_903][points]': 0.0}
 
 @pytest.fixture
 def competencies_payload2():
   return {
-    'rubric_assessment[_3104][rating_id]': 'blank_2',  #Dosage
-    'rubric_assessment[_3104][points]': 0, 
-    'rubric_assessment[76864_390][rating_id]': '76864_8410', #Intercultural Humility
-    'rubric_assessment[76864_390][points]': 5.0, 
-    'rubric_assessment[76864_6556][rating_id]': '76864_7059', #Interprofessional Communication
-    'rubric_assessment[76864_6556][points]': 3.0, 
-    'rubric_assessment[76864_8770][rating_id]': '76864_8566', #Roles/Responsibilities
-    'rubric_assessment[76864_8770][points]': 5.0, 
-    'rubric_assessment[76864_2231][rating_id]': '76864_3528', #Team/Teamwork
-    'rubric_assessment[76864_2231][points]': 1.0, 
-    'rubric_assessment[76864_7039][rating_id]': '76864_6509', #Values/Ethics
-    'rubric_assessment[76864_7039][points]': 0.0}
+    'rubric_assessment[_123][rating_id]': 'blank_2',  #Dosage
+    'rubric_assessment[_123][points]': 0, 
+    'rubric_assessment[456_345][rating_id]': '_2560', #Intercultural Humility
+    'rubric_assessment[456_345][points]': 5.0, 
+    'rubric_assessment[456_678][rating_id]': '_2566', #Interprofessional Communication
+    'rubric_assessment[456_678][points]': 3.0, 
+    'rubric_assessment[456_901][rating_id]': '_2570', #Roles/Responsibilities
+    'rubric_assessment[456_901][points]': 5.0, 
+    'rubric_assessment[456_902][rating_id]': '_2577', #Team/Teamwork
+    'rubric_assessment[456_902][points]': 1.0, 
+    'rubric_assessment[456_903][rating_id]': '_2584', #Values/Ethics
+    'rubric_assessment[456_903][points]': 0.0}
   
 @pytest.fixture
 def enrollment_response():

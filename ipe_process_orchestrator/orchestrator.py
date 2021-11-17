@@ -83,6 +83,7 @@ class IPECompetenciesOrchestrator:
         This is the place where all the IPE process flow will be orchestrated.
         """
         self._clean_up_ipe_dataframe()
-        rubrics_data: Dict[str, Any] = self.getting_rubrics()
-        logger.info(f'Rubrics data: {rubrics_data}')
-        self.filter_df_course_ids.apply(lambda course: self.start_competencies_assigning_process(course), axis=1)
+        rubric_data: Dict[str, Any] = self.getting_rubric()
+        logger.info(f'Rubric data: {rubric_data}')
+        self.filter_df_course_ids.apply(
+            lambda course: self.start_competencies_assigning_process(course, rubric_data), axis=1)
