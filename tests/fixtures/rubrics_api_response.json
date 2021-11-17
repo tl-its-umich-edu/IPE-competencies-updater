@@ -1,0 +1,246 @@
+{
+  "id": 1,
+  "context_id": 2,
+  "context_type": "Account",
+  "data": [
+    {
+      "description": "Dosage (contact hours)",
+      "points": 100.0,
+      "id": "_123",
+      "criterion_use_range": true,
+      "ratings": [
+        {
+          "description": "Full \"dose\"",
+          "long_description": "Enter contact hours associated with IPE competencies achieved in this IPE experience",
+          "points": 100.0,
+          "criterion_id": "_123",
+          "id": "blank"
+        },
+        {
+          "description": "No \"dose\"",
+          "long_description": "No IPE competencies are associated with this IPE experience",
+          "points": 0.0,
+          "criterion_id": "_123",
+          "id": "blank_2"
+        }
+      ]
+    },
+    {
+      "description": "Intercultural Humility",
+      "points": 5.0,
+      "id": "456_345",
+      "criterion_use_range": false,
+      "ratings": [
+        {
+          "description": "Practice",
+          "long_description": "",
+          "points": 5.0,
+          "criterion_id": "456_345",
+          "id": "_2560"
+        },
+        {
+          "description": "Reinforce",
+          "long_description": "",
+          "points": 3.0,
+          "criterion_id": "456_345",
+          "id": "_2561"
+        },
+        {
+          "description": "Introduce",
+          "long_description": "",
+          "points": 1.0,
+          "criterion_id": "456_345",
+          "id": "_2562"
+        },
+        {
+          "description": "Does Not Meet Competency",
+          "long_description": "",
+          "points": 0.5,
+          "criterion_id": "456_345",
+          "id": "_2563"
+        },
+        {
+          "description": "N/A",
+          "long_description": "",
+          "points": 0.0,
+          "criterion_id": "456_345",
+          "id": "_2564"
+        }
+      ]
+    },
+    {
+      "description": "Interprofessional Communication",
+      "points": 5.0,
+      "id": "456_678",
+      "criterion_use_range": false,
+      "ratings": [
+        {
+          "description": "Practice",
+          "long_description": "",
+          "points": 5.0,
+          "criterion_id": "456_678",
+          "id": "_2565"
+        },
+        {
+          "description": "Reinforce",
+          "long_description": "",
+          "points": 3.0,
+          "criterion_id": "456_678",
+          "id": "_2566"
+        },
+        {
+          "description": "Introduce",
+          "long_description": "",
+          "points": 1.0,
+          "criterion_id": "456_678",
+          "id": "_2567"
+        },
+        {
+          "description": "Does Not Meet Competency",
+          "long_description": "",
+          "points": 0.5,
+          "criterion_id": "456_678",
+          "id": "_2568"
+        },
+        {
+          "description": "N/A",
+          "long_description": "",
+          "points": 0.0,
+          "criterion_id": "456_678",
+          "id": "_2569"
+        }
+      ]
+    },
+    {
+      "description": "Roles/Responsibilities",
+      "points": 5.0,
+      "id": "456_901",
+      "criterion_use_range": false,
+      "ratings": [
+        {
+          "description": "Practice",
+          "long_description": "",
+          "points": 5.0,
+          "criterion_id": "456_901",
+          "id": "_2570"
+        },
+        {
+          "description": "Reinforce",
+          "long_description": "",
+          "points": 3.0,
+          "criterion_id": "456_901",
+          "id": "_2571"
+        },
+        {
+          "description": "Introduce",
+          "long_description": "",
+          "points": 1.0,
+          "criterion_id": "456_901",
+          "id": "_2572"
+        },
+        {
+          "description": "Does Not Meet Competency",
+          "long_description": "",
+          "points": 0.5,
+          "criterion_id": "456_901",
+          "id": "_2573"
+        },
+        {
+          "description": "N/A",
+          "long_description": "",
+          "points": 0.0,
+          "criterion_id": "456_901",
+          "id": "_2574"
+        }
+      ]
+    },
+    {
+      "description": "Team/Teamwork",
+      "points": 5.0,
+      "id": "456_902",
+      "criterion_use_range": false,
+      "ratings": [
+        {
+          "description": "Practice",
+          "long_description": "",
+          "points": 5.0,
+          "criterion_id": "456_902",
+          "id": "_2575"
+        },
+        {
+          "description": "Reinforce",
+          "long_description": "",
+          "points": 3.0,
+          "criterion_id": "456_902",
+          "id": "_2576"
+        },
+        {
+          "description": "Introduce",
+          "long_description": "",
+          "points": 1.0,
+          "criterion_id": "456_902",
+          "id": "_2577"
+        },
+        {
+          "description": "Does Not Meet Competency",
+          "long_description": "",
+          "points": 0.5,
+          "criterion_id": "456_902",
+          "id": "_2578"
+        },
+        {
+          "description": "N/A",
+          "long_description": "",
+          "points": 0.0,
+          "criterion_id": "456_902",
+          "id": "_2579"
+        }
+      ]
+    },
+    {
+      "description": "Values/Ethics",
+      "points": 5.0,
+      "id": "456_903",
+      "criterion_use_range": false,
+      "ratings": [
+        {
+          "description": "Practice",
+          "long_description": "",
+          "points": 5.0,
+          "criterion_id": "456_903",
+          "id": "_2580"
+        },
+        {
+          "description": "Reinforce",
+          "long_description": "",
+          "points": 3.0,
+          "criterion_id": "456_903",
+          "id": "_2581"
+        },
+        {
+          "description": "Introduce",
+          "long_description": "",
+          "points": 1.0,
+          "criterion_id": "456_903",
+          "id": "_2582"
+        },
+        {
+          "description": "Does Not Meet Competency",
+          "long_description": "",
+          "points": 0.5,
+          "criterion_id": "456_903",
+          "id": "_2583"
+        },
+        {
+          "description": "N/A",
+          "long_description": "",
+          "points": 0.0,
+          "criterion_id": "456_903",
+          "id": "_2584"
+        }
+      ]
+    }
+  ],
+  "points_possible": 125.0,
+  "title": "IPE Competencies"
+}
