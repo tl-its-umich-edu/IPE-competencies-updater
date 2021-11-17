@@ -45,9 +45,8 @@ class IPERubricSimplified():
     def _criteria_rating_simple(self, criteria_rating) -> List[Dict[str, Any]]:
         criteria_rating_simplied = list()
         for rating in criteria_rating:
-            rating_description = rating['description'].strip(
-                '/').replace('"', '') if 'dose' in rating['description'] else rating['description']
-            rating_object = {}
+            # Criteria description values are Full "dose", No "dose", Practice, Introduce, Reinforce, N/A, Does Not Meet Competency
+            rating_description = rating['description'].replace('"', '') if 'dose' in rating['description'] else rating['description']
             rating_object = {
                 'id': rating['id'],
                 'points': rating['points'],
