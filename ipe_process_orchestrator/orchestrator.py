@@ -5,9 +5,10 @@ import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
 from ipe_process_orchestrator.rubric_data import IPERubricSimplified
+from ipe_process_orchestrator.assign_competencies import IPECompetenciesAssigner
 from api_handler.api_calls import APIHandler
-from constants import (COL_COURSE_ID)
-
+from constants import (COL_COURSE_ID, COL_COMPETENCIES_RR, COL_COMPETENCIES_TTW, COL_COMPETENCIES_IC,
+                       COL_COMPETENCIES_VE, COL_COMPETENCIES_IH, COL_DOSAGE)
 
 logger = logging.getLogger(__name__)
 
@@ -67,23 +68,43 @@ class IPECompetenciesOrchestrator:
             logger.error(f'Error in getting_rubrics: {e}')
             sys.exit(1)
 
-    def start_competencies_assigning_process(self, course: pd.Series) -> None:
+    def check_competencies_values_given_gsheet(self, course: pd.Series) -> None:
+        """
+        Check if the competencies values are given in the Google Sheet. If not, then exit the process.
+        Not a real life usecase, just checking for sanity.
+        """
+        try:
+            if(course[COL_COMPETENCIES_RR] and course[COL_COMPETENCIES_TTW] and course[COL_COMPETENCIES_IC] and
+               course[COL_COMPETENCIES_VE] and course[COL_COMPETENCIES_IH] and course[COL_DOSAGE]):
+                return True
+            else: 
+              logger.error(f'Competencies values some or all not given in the Google Sheet for course: {course[COL_COURSE_ID]}')
+              return False
+        except Exception as e:
+            logger.error(f'Error in getting the ipe competencies values from Google Sheet for course {course[COL_COURSE_ID]}: {e}')
+            return False
+
+    def start_competencies_assigning_process(self, course: pd.Series, rubric_data) -> None:
         """
         First step in the assiging competencies process is to create the asssignment if it does not exist.
         Second step is to assign competencies to the assignment.
+        Thrid step is to update the status in Google Sheets that the competencies are assigned.
         """
         try:
+            if not self.check_competencies_values_given_gsheet(course):
+              return
             assignment_id = self._create_delete_assignment(course)
+            IPECompetenciesAssigner(
+                self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
         except Exception as e:
             logger.error(e)
 
-            
     def start_composing_process(self):
         """
         This is the place where all the IPE process flow will be orchestrated.
         """
         self._clean_up_ipe_dataframe()
-        rubric_data: Dict[str, Any] = self.getting_rubric()
-        logger.info(f'Rubric data: {rubric_data}')
+        rubric_data: Dict[str, Any] = self.getting_rubrics()
+        logger.debug(f'Rubric data: {rubric_data}')
         self.filter_df_course_ids.apply(
             lambda course: self.start_competencies_assigning_process(course, rubric_data), axis=1)

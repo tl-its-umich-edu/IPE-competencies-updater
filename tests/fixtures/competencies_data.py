@@ -60,6 +60,6 @@ def competencies_payload2():
   
 @pytest.fixture
 def enrollment_response():
-  with open('tests/fixtures/enrollment_response.json','r') as f:
+  with open('tests/fixtures/json/enrollment_response.json','r') as f:
         enrollment_json = json.loads(f.read())
   return enrollment_json

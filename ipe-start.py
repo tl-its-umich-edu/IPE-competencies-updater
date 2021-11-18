@@ -4,7 +4,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from read_env_props import ReadEnvProps
 from gspread.models import Worksheet
-from ipe_course_data.get_ipe_data_from_gsheets import GetIPEDataFromSheetsq
+from ipe_course_data.get_ipe_data_from_gsheets import GetIPEDataFromSheets
 from ipe_process_orchestrator.orchestrator import IPECompetenciesOrchestrator
 from umich_api.api_utils import ApiUtil
 from api_handler.api_calls import APIHandler

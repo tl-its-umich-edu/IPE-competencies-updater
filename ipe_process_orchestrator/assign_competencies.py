@@ -1,7 +1,8 @@
 import logging, json, pandas as pd
-from typing import Any, Dict, List, Tuple, Union
+import time
+from typing import Any, Dict, List, Union
 from requests import Response
-from dataclasses import dataclass, fields
+from dataclasses import dataclass
 from api_handler.api_calls import APIHandler
 from ipe_process_orchestrator.api_helper import response_none_check
 from constants import (
@@ -18,6 +19,7 @@ class IPECompetenciesAssigner:
 
     
     def get_student_list_with_course_grades(self) -> List[Dict[str, Any]]:
+      logger.info(f'Getting enrollments/grades for course {self.course[COL_COURSE_ID]}')
       more_pages: bool = True
       page_num: int = 1
       students_with_grades: List[Dict[str, Any]] = list()
@@ -50,18 +52,18 @@ class IPECompetenciesAssigner:
             logging.debug(f'Params for next page: {page_info}')
             student_list_payload = page_info
             page_num += 1
-        
+      logger.info(f'{len(students_with_grades)} active enrolled students may receive IPE competencies in the course {self.course[COL_COURSE_ID]}')
       return students_with_grades
       
     def get_competency_payload(self) -> Dict[str, Any]:
       competency_payload: Dict[str, Any] = dict()
+      logger.info(f'Course: {self.course[COL_COURSE_ID]} enrollments will get competencies values as: {tuple([(key, self.course[key]) for key, value in self.rubric_data.items()])}')
       for rubric_key, rubric_value in self.rubric_data.items():
         competency_asignment_value = self.course[rubric_key]
-        logger.info(f'Competency assignment value is {competency_asignment_value} for competencies {rubric_key}')
         competency_id = rubric_value['id']
         competency_ratings = rubric_value['ratings']
         if rubric_key == COL_DOSAGE:
-            if competency_asignment_value:
+            if competency_asignment_value and competency_asignment_value > 0:
               rating = next(rating for rating in competency_ratings if rating['description'] == FULL_DOSE)
               competency_payload[f"rubric_assessment[{competency_id}][rating_id]"] = rating['id']
               competency_payload[f"rubric_assessment[{competency_id}][points]"] = competency_asignment_value
@@ -76,7 +78,7 @@ class IPECompetenciesAssigner:
               competency_payload[f"rubric_assessment[{competency_id}][points]"] = rating['points']
               break
           
-      logger.info(f'Competency payload is {competency_payload}')
+      logger.debug(f'Competency payload is {competency_payload}')
       return competency_payload
 
     def get_student_list_to_receive_competencies(self, student_grades) -> List[Dict[str, Any]]:
@@ -97,7 +99,7 @@ class IPECompetenciesAssigner:
       
     def assign_competancies(self, students_grades) -> None:
       course_id = self.course[COL_COURSE_ID]
-      logger.info(f'Assigning competencies in course {course_id} to assignment {self.assignment_id} for {len(students_grades)} students')
+      logger.info(f'Starting assigning competencies in course {course_id} to assignment {self.assignment_id} for {len(students_grades)} students.....')
       competency_assign_payload = self.get_competency_payload()
       students_for_assigning_competencies: List[Dict[str, Any]] = self.get_student_list_to_receive_competencies(students_grades)
 
@@ -118,12 +120,15 @@ class IPECompetenciesAssigner:
       if failed_students:
         logger.error(f"{len(students_grades)-len(failed_students)}/{len(students_grades)} students didn't got competancies assigned in course {course_id} in assignment {self.assignment_id}.")
         logger.error(failed_students)
+    
 
     
     def start_assigning_process(self) -> None:
       logger.info(f'Assigning competencies for course {self.course[COL_COURSE_ID]} in assignment {self.assignment_id}')
+      start_time = time.perf_counter()
       student_grades: List[Dict[str, Any]] = self.get_student_list_with_course_grades()
-      logger.info(f'{len(student_grades)} students with active enrollments in the course {self.course[COL_COURSE_ID]}')
       if(len(student_grades) == 0):
         return
       self.assign_competancies(student_grades)
+      end_time = time.perf_counter()
+      logger.info(f"Assigning competencies for in course {self.course[COL_COURSE_ID]} took {end_time - start_time:0.4f} seconds")

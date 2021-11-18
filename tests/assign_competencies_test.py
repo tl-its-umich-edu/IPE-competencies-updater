@@ -63,6 +63,22 @@ def test_competencies_payload_with_no_dosage(api_handler, single_ipe_offering, r
   payload_actual = comp_assigner.get_competency_payload()
   assert payload_actual == competencies_payload2
 
+def test_competencies_payload_with_zero_dosage(api_handler, single_ipe_offering, rubric_simple, competencies_payload2):
+  """
+  This tests when doasage is zero hours given then the payload will return no dose values
+  """
+  single_ipe_offering['Dosage (contact hours)'] = 0
+  single_ipe_offering['Intercultural Humility'] = 'Practice'
+  single_ipe_offering['Interprofessional Communication'] = 'Reinforce'
+  single_ipe_offering['Roles/Responsibilities'] = 'Practice'
+  single_ipe_offering['Team/Teamwork'] = 'Introduce'
+  single_ipe_offering['Values/Ethics'] = 'N/A'
+
+  course = pd.Series(single_ipe_offering)
+  comp_assigner = IPECompetenciesAssigner(api_handler, '448447122', course, rubric_simple)
+  payload_actual = comp_assigner.get_competency_payload()
+  assert payload_actual == competencies_payload2
+
 def test_more_enrollments_are_fetched(api_handler, ipe_props, enrollment_response, single_ipe_offering):
   """
   This tests make sure the pagination works as expected when fetching more enrollments
