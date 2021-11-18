@@ -170,11 +170,3 @@ def test_competencies_assigned_to_students_with_few_failures(ipe_props, student_
     mock_competencies_assigning.side_effect = resp_mocks
     comp_assigner.assign_competancies(student_data)
   assert mock_competencies_assigning.call_count == 10
-
-    
-
-
-
-
-
-

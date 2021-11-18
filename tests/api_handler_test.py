@@ -125,11 +125,3 @@ def test_api_for_no_next_page(ipe_props, api_handler: APIHandler):
         page_info_actual = api_handler.get_next_page(mock_resp)
 
     assert page_info_actual == None
-
-
-
-
-
-  
-
-

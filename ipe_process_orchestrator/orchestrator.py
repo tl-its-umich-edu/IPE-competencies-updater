@@ -1,6 +1,6 @@
 import logging
 import sys
-from typing import Any, Dict, NoReturn, Union
+from typing import Any, Dict, Literal, NoReturn, Union
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
@@ -8,7 +8,7 @@ from ipe_process_orchestrator.rubric_data import IPERubricSimplified
 from ipe_process_orchestrator.assign_competencies import IPECompetenciesAssigner
 from api_handler.api_calls import APIHandler
 from constants import (COL_COURSE_ID, COL_COMPETENCIES_RR, COL_COMPETENCIES_TTW, COL_COMPETENCIES_IC,
-                       COL_COMPETENCIES_VE, COL_COMPETENCIES_IH, COL_DOSAGE)
+                       COL_COMPETENCIES_VE, COL_COMPETENCIES_IH, COL_DOSAGE, COL_ASSIGNING_LO_CRITERIA)
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +39,7 @@ class IPECompetenciesOrchestrator:
             logger.error(f'Error in clean_up_ipe_dataframe: {e}')
             sys.exit(1)
 
-    def _create_delete_assignment(self, course: pd.Series) -> Union[NoReturn, str]:
+    def _create_delete_assignment(self, course: pd.Series) -> Union[NoReturn, int]:
         """
         Create the new IPE assignment if such assignment does not exist or delete the existing one if it exists. This action
         is as a result of copied course and so delete the existing assignment is the best option.
@@ -49,7 +49,7 @@ class IPECompetenciesOrchestrator:
         assignment_flow = IPEAssignmentFlow(
             self.api_handler, course_id, rubric_id)
         try:
-            assignment_id: str = assignment_flow.start_assignment_flow()
+            assignment_id: int = assignment_flow.start_assignment_flow()
             return assignment_id
         except Exception as e:
             raise e
@@ -68,20 +68,20 @@ class IPECompetenciesOrchestrator:
             logger.error(f'Error in getting_rubrics: {e}')
             sys.exit(1)
 
-    def check_competencies_values_given_gsheet(self, course: pd.Series) -> None:
+    def check_competencies_values_given_gsheet(self, course: pd.Series) -> Union[Literal[True], Literal[False]]:
         """
         Check if the competencies values are given in the Google Sheet. If not, then exit the process.
         Not a real life usecase, just checking for sanity.
         """
         try:
             if(course[COL_COMPETENCIES_RR] and course[COL_COMPETENCIES_TTW] and course[COL_COMPETENCIES_IC] and
-               course[COL_COMPETENCIES_VE] and course[COL_COMPETENCIES_IH] and course[COL_DOSAGE]):
+               course[COL_COMPETENCIES_VE] and course[COL_COMPETENCIES_IH] and course[COL_DOSAGE] and course[COL_ASSIGNING_LO_CRITERIA]):
                 return True
             else: 
-              logger.error(f'Competencies values some or all not given in the Google Sheet for course: {course[COL_COURSE_ID]}')
+              logger.error(f'Competencies few or all values not provided in the Google Sheet so skipping competency process for course: {course[COL_COURSE_ID]}')
               return False
         except Exception as e:
-            logger.error(f'Error in getting the ipe competencies values from Google Sheet for course {course[COL_COURSE_ID]}: {e}')
+            logger.error(f'Error in getting the ipe competencies values from Google Sheet so skipping competency process for course {course[COL_COURSE_ID]}: {e}')
             return False
 
     def start_competencies_assigning_process(self, course: pd.Series, rubric_data) -> None:
@@ -93,7 +93,7 @@ class IPECompetenciesOrchestrator:
         try:
             if not self.check_competencies_values_given_gsheet(course):
               return
-            assignment_id = self._create_delete_assignment(course)
+            assignment_id: int = self._create_delete_assignment(course)
             IPECompetenciesAssigner(
                 self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
         except Exception as e:

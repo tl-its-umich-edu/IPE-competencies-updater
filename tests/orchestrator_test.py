@@ -11,6 +11,7 @@ def test_competancies_values_not_empty(single_ipe_offering, ipe_props, api_handl
     single_ipe_offering['Roles/Responsibilities'] = ''
     single_ipe_offering['Team/Teamwork'] = 'Introduce'
     single_ipe_offering['Values/Ethics'] = ''
+    single_ipe_offering['COL_ASSIGNING_LO_CRITERIA'] = ''
     course = pd.Series(single_ipe_offering)
     check_status = IPECompetenciesOrchestrator(ipe_props, pd.DataFrame(), api_handler).check_competencies_values_given_gsheet(course)
     assert check_status == False

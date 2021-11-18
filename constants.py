@@ -18,7 +18,6 @@ COL_COMPETENCIES_VE = 'Values/Ethics'
 COL_COMPETENCIES_IH = 'Intercultural Humility'
 COL_DOSAGE = 'Dosage (contact hours)'
 COL_ASSIGNING_LO_CRITERIA = 'Criteria for Assigning Outcomes in Canvas'
-AC_DO_NOT_RUN='Do Not Run'
 AC_ALL_ENROLLED='All Enrolled'
 AC_70_PERCENT_GRADE='Passing - 70% or Higher'
 

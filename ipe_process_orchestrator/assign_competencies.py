@@ -1,5 +1,5 @@
 import logging, json, pandas as pd
-import time
+import time, datetime
 from typing import Any, Dict, List, Union
 from requests import Response
 from dataclasses import dataclass
@@ -81,7 +81,7 @@ class IPECompetenciesAssigner:
       logger.debug(f'Competency payload is {competency_payload}')
       return competency_payload
 
-    def get_student_list_to_receive_competencies(self, student_grades) -> List[Dict[str, Any]]:
+    def get_student_list_to_receive_competencies(self, student_grades: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
       """
       returns the list of students who will receive competencies. If the Criteria is `All Enrolled`, then all the students will be returned. 
       If the criteria is `70% grade`, then only the students with 70% grade will be returned.
@@ -96,6 +96,7 @@ class IPECompetenciesAssigner:
         students_greater_than_70_percent_grade = [student for student in student_grades if student['grade'] is not None and student['grade'] >= COMPETENCY_ASSIGNING_COURSE_GRADE]
         logger.info(f"For course {self.course[COL_COURSE_ID]} with competencies criteria: '{AC_70_PERCENT_GRADE}', {len(students_greater_than_70_percent_grade)}/{len(student_grades)} students will receive competencies")
         return students_greater_than_70_percent_grade
+      else:return student_grades
       
     def assign_competancies(self, students_grades) -> None:
       course_id = self.course[COL_COURSE_ID]
@@ -131,4 +132,4 @@ class IPECompetenciesAssigner:
         return
       self.assign_competancies(student_grades)
       end_time = time.perf_counter()
-      logger.info(f"Assigning competencies for in course {self.course[COL_COURSE_ID]} took {end_time - start_time:0.4f} seconds")
+      logger.info(f"Assigning competencies for course {self.course[COL_COURSE_ID]} took {datetime.timedelta(seconds=(end_time - start_time))}")
