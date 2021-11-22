@@ -1,4 +1,6 @@
 import pandas as pd
+from datetime import datetime
+from constants import (WHEN_TO_RUN_SCRIPT, SCRIPT_RUN)
 import logging
 
 logger = logging.getLogger(__name__)
@@ -17,3 +19,15 @@ def df_remove_non_course_id(df: pd.DataFrame) -> pd.DataFrame:
     df_with_coursesId = df.loc[df['Canvas Course ID'].apply(
         pd.to_numeric, errors='coerce').notnull()]
     return df_with_coursesId
+
+def df_filter_course_based_on_month(df: pd.DataFrame, month: str) -> pd.DataFrame:
+    """
+    Filter a dataframe based on given month value and script run is empty .
+    """
+    return df.loc[(df[WHEN_TO_RUN_SCRIPT]== month ) & (df[SCRIPT_RUN] == '')]
+
+def current_time()-> str:
+    """
+    Return current time in format: YYYY-MM-DD HH:MM:SS
+    """
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')

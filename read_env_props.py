@@ -18,6 +18,8 @@ class ReadEnvProps:
         self.env_props['rubric_id'] = os.environ.get('IPE_RUBRIC_ID')
         self.env_props['rubric_account_id'] = os.environ.get('IPE_RUBRICS_ACCOUNT')
         self.env_props['retry_attempts'] = os.environ.get('MAX_REQ_ATTEMPTS')
+        self.env_props['script_run_month'] = os.environ.get('SCRIPT_RUN_MONTH')
+        self.env_props['update_sheet'] = os.environ.get('UPDATE_SHEET')
     
     def get_env_props(self) -> Dict[str, Optional[str]]:
         logger.debug(self.env_props)

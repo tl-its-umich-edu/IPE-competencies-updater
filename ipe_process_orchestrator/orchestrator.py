@@ -2,7 +2,7 @@ import logging
 import sys
 from typing import Any, Dict, Literal, NoReturn, Union
 import pandas as pd
-from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id
+from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id, df_filter_course_based_on_month
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
 from ipe_process_orchestrator.rubric_data import IPERubricSimplified
 from ipe_process_orchestrator.assign_competencies import IPECompetenciesAssigner
@@ -18,25 +18,26 @@ class IPECompetenciesOrchestrator:
         """
         Initialize the orchestrator
         """
-        self.orginal_df: pd.DataFrame = original_df
+        self.original_df: pd.DataFrame = original_df
         self.props = props
         self.api_handler: APIHandler = api_handler
         self.filter_df_course_ids = pd.DataFrame()
 
-    def _clean_up_ipe_dataframe(self) -> None:
+    def filter_course_list_to_run_cleanup(self) -> None:
         """
+        this filter the courses that need to be run based on the 'Script Run?' and `When does the script run columns
         Clean up the dataframe
         1. leading and trailing spaces df.columns
         2. only courses id list with values that are numbers. Removes Shell, shell, empty, n/a, shell(23333)
         3. the original dataframe will remain same and the filtered dataframe will be created with courseIds
-
         """
         try:
-            self.orginal_df.columns = df_columns_strip(self.orginal_df.columns)
-            cleaned_up_df = df_remove_non_course_id(self.orginal_df)
-            self.filter_df_course_ids = cleaned_up_df
+            self.original_df.columns = df_columns_strip(self.original_df.columns)
+            courses_to_run_df = df_filter_course_based_on_month(self.original_df, self.props['script_run_month'])
+            cleaned_up_with_courses_df = df_remove_non_course_id(courses_to_run_df)
+            self.filter_df_course_ids = cleaned_up_with_courses_df
         except Exception as e:
-            logger.error(f'Error in clean_up_ipe_dataframe: {e}')
+            logger.error(f'Error in when getting the courses based on the scrip run and when to run script columns: {e}')
             sys.exit(1)
 
     def _create_delete_assignment(self, course: pd.Series) -> Union[NoReturn, int]:
@@ -104,7 +105,7 @@ class IPECompetenciesOrchestrator:
         """
         This is the place where all the IPE process flow will be orchestrated.
         """
-        self._clean_up_ipe_dataframe()
+        self.filter_course_list_to_run_cleanup()
         rubric_data: Dict[str, Any] = self.getting_rubrics()
         logger.debug(f'Rubric data: {rubric_data}')
         self.filter_df_course_ids.apply(
