@@ -107,6 +107,9 @@ class IPECompetenciesOrchestrator:
         This is the place where all the IPE process flow will be orchestrated.
         """
         self.filter_course_list_to_run_and_cleanup()
+        if self.filter_df_course_ids.empty:
+            logger.info('No courses qualified to run the IPE process')
+            return
         rubric_data: Dict[str, Any] = self.getting_rubrics()
         logger.debug(f'Rubric data: {rubric_data}')
         self.filter_df_course_ids.apply(
