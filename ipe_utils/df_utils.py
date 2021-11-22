@@ -1,6 +1,6 @@
 import pandas as pd
 from datetime import datetime
-from constants import (WHEN_TO_RUN_SCRIPT, SCRIPT_RUN)
+from constants import (WHEN_TO_RUN_SCRIPT, SCRIPT_RUN, COL_COURSE_ID)
 import logging
 
 logger = logging.getLogger(__name__)
@@ -22,9 +22,15 @@ def df_remove_non_course_id(df: pd.DataFrame) -> pd.DataFrame:
 
 def df_filter_course_based_on_month(df: pd.DataFrame, month: str) -> pd.DataFrame:
     """
-    Filter a dataframe based on given month value and script run is empty .
+    Filter a dataframe based on given month value and script run column is empty .
     """
     return df.loc[(df[WHEN_TO_RUN_SCRIPT]== month ) & (df[SCRIPT_RUN] == '')]
+
+def df_filter_course_duplicates(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Remove duplicate course id's from a dataframe.
+    """
+    return df.drop_duplicates(subset=[COL_COURSE_ID])
 
 def current_time()-> str:
     """

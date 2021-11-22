@@ -1,7 +1,7 @@
-import logging
+import logging, pytest
 from typing import List
 import pandas as pd
-from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id, df_filter_course_based_on_month, current_time
+from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id, df_filter_course_based_on_month, current_time, df_filter_course_duplicates
 from constants import(COL_COURSE_ID, SCRIPT_RUN)
 from read_env_props import ReadEnvProps
 from ipe_process_orchestrator.orchestrator import IPECompetenciesOrchestrator
@@ -35,7 +35,7 @@ def test_get_courses_with_month_value_in_when_to_run_column(ipe_ws_df: pd.DataFr
     Script run column is not updated
     """
     orc = IPECompetenciesOrchestrator(ipe_props, ipe_ws_df, None)
-    orc.filter_course_list_to_run_cleanup()
+    orc.filter_course_list_to_run_and_cleanup()
     assert orc.original_df.shape[0] == 16
     assert orc.filter_df_course_ids.shape[0] == 5
 
@@ -50,18 +50,41 @@ def test_get_courses_with_month_value_in_when_to_run_column_and_no_value_script_
     ipe_ws_df.at[4, SCRIPT_RUN] = now
     ipe_ws_df.at[6, SCRIPT_RUN] = now
     orc = IPECompetenciesOrchestrator(ipe_props, ipe_ws_df, None)
-    orc.filter_course_list_to_run_cleanup()
+    orc.filter_course_list_to_run_and_cleanup()
     assert orc.original_df.shape[0] == 16
     assert orc.filter_df_course_ids.shape[0] == 3
 
-def test_filter_courses_to_run(ipe_ws_df):
+def test_courses_qualified_to_run_has_no_duplicate_course_ids(ipe_ws_df: pd.DataFrame, ipe_props: ReadEnvProps):
+    """
+    This test is to ensure that the courses qualified(based on when to run and script run columns) to run has no duplicate course ids
+    """
+    now = current_time()
+    ipe_ws_df.at[2, SCRIPT_RUN] = now
+    ipe_ws_df.at[4, SCRIPT_RUN] = now
+    ipe_ws_df.at[6, SCRIPT_RUN] = now
+    ipe_ws_df.at[1, COL_COURSE_ID] = 67833444 # assigning duplicate course id from row 0 to row 1 in the dataframe
+    orc = IPECompetenciesOrchestrator(ipe_props, ipe_ws_df, None)
+    orc.filter_course_list_to_run_and_cleanup()
+    assert orc.original_df.shape[0] == 16
+    assert orc.filter_df_course_ids.shape[0] == 2
+
+def test_trigger_exception_when_filterning_courses(ipe_props):
+    """
+    this test will trigger an exception when filtering courses
+    """
+    with pytest.raises(SystemExit) as e:
+        IPECompetenciesOrchestrator(ipe_props, None, None).filter_course_list_to_run_and_cleanup()
+    assert e.type == SystemExit
+    assert e.value.code == 1
+
+def test_filter_courses_to_run(ipe_ws_df: pd.DataFrame):
     """
     this will get courses to run for a given month and Script run column not updated
     """
     df_actual = df_filter_course_based_on_month(ipe_ws_df, 'June')
     assert df_actual.shape[0] == 7
 
-def test_filter_courses_with_few_script_run_values(ipe_ws_df):
+def test_filter_courses_with_few_script_run_values(ipe_ws_df: pd.DataFrame):
     """
     courses are filtered based on Month and Script run column updated. this test is making sure that the courses already ran is not picked up 
     """
@@ -71,4 +94,11 @@ def test_filter_courses_with_few_script_run_values(ipe_ws_df):
     ipe_ws_df.at[6, SCRIPT_RUN] = now
     df_actual = df_filter_course_based_on_month(ipe_ws_df, 'June')
     assert df_actual.shape[0] == 4
+
+def test_duplicate_course_ids_removed(dummy_df: pd.DataFrame):
+    """
+    duplicate course ids are removed from the dataframe
+    """
+    df_actual = df_filter_course_duplicates(dummy_df)
+    assert df_actual.shape[0] == 7
     
