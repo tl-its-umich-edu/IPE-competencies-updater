@@ -78,7 +78,7 @@ class IPECompetenciesOrchestrator:
                course[COL_COMPETENCIES_VE] and course[COL_COMPETENCIES_IH] and course[COL_DOSAGE] and course[COL_ASSIGNING_LO_CRITERIA]):
                 return True
             else: 
-              logger.error(f'Competencies few or all values not provided in the Google Sheet so skipping competency process for course: {course[COL_COURSE_ID]}')
+              logger.error(f'Not all required competencies values are provided in the Google Sheet so skipping competency process for course: {course[COL_COURSE_ID]}')
               return False
         except Exception as e:
             logger.error(f'Error in getting the ipe competencies values from Google Sheet so skipping competency process for course {course[COL_COURSE_ID]}: {e}')
@@ -88,11 +88,12 @@ class IPECompetenciesOrchestrator:
         """
         First step in the assiging competencies process is to create the asssignment if it does not exist.
         Second step is to assign competencies to the assignment.
-        Thrid step is to update the status in Google Sheets that the competencies are assigned.
+        Third step is to update the status in Google Sheets that the competencies are assigned.
         """
+        if not self.check_competencies_values_given_gsheet(course):
+            return
+        
         try:
-            if not self.check_competencies_values_given_gsheet(course):
-              return
             assignment_id: int = self._create_delete_assignment(course)
             IPECompetenciesAssigner(
                 self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
