@@ -9,9 +9,11 @@ API_DIRECTORY_URL=
 # This is the rubrics that contain IPE competencies defined as Learning outcomes. This cannot be changed once it is assigned to student submissions.
 IPE_RUBRIC_ID=76864
 IPE_RUBRICS_ACCOUNT=1245
+# This value is assigned to each course via When to run script column. We configure it here to the value that is expected pick up course for the run
+SCRIPT_RUN_MONTH=June
+
 MAX_REQ_ATTEMPTS = 3
 
 LOG_LEVEL=DEBUG
 
 UPDATE_SHEET = False
-SCRIPT_RUN_MONTH=June

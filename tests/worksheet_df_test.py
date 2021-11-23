@@ -2,7 +2,7 @@ import logging, pytest
 from typing import List
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id, df_filter_course_based_on_month, current_time, df_filter_course_duplicates
-from constants import(COL_COURSE_ID, SCRIPT_RUN)
+from constants import(COL_COURSE_ID, SCRIPT_RUN, WHEN_TO_RUN_SCRIPT)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -29,7 +29,11 @@ def test_filter_courses_to_run(ipe_ws_df: pd.DataFrame):
     """
     this will get courses to run for a given month and Script run column not updated
     """
-    df_actual = df_filter_course_based_on_month(ipe_ws_df, 'June')
+
+    ipe_ws_df.at[2, WHEN_TO_RUN_SCRIPT] = 'JUNE'
+    ipe_ws_df.at[4, WHEN_TO_RUN_SCRIPT] = 'june'
+    ipe_ws_df.at[6, WHEN_TO_RUN_SCRIPT] = 'JUne'
+    df_actual = df_filter_course_based_on_month(ipe_ws_df, 'JuNe')
     assert df_actual.shape[0] == 7
 
 def test_filter_courses_with_few_script_run_values(ipe_ws_df: pd.DataFrame):
@@ -37,6 +41,7 @@ def test_filter_courses_with_few_script_run_values(ipe_ws_df: pd.DataFrame):
     courses are filtered based on Month and Script run column updated. this test is making sure that the courses already ran is not picked up 
     """
     now = current_time()
+    ipe_ws_df.at[2, SCRIPT_RUN] = 'JUNE'
     ipe_ws_df.at[2, SCRIPT_RUN] = now
     ipe_ws_df.at[4, SCRIPT_RUN] = now
     ipe_ws_df.at[6, SCRIPT_RUN] = now

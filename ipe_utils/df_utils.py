@@ -22,9 +22,10 @@ def df_remove_non_course_id(df: pd.DataFrame) -> pd.DataFrame:
 
 def df_filter_course_based_on_month(df: pd.DataFrame, month: str) -> pd.DataFrame:
     """
-    Filter a dataframe based on given month value and script run column is empty .
+    Filter a dataframe based on given month value and script run column is empty.
+    Converting all months to lower case since this is typed by hand in the sheet instead of dropdown.
     """
-    return df.loc[(df[WHEN_TO_RUN_SCRIPT]== month ) & (df[SCRIPT_RUN] == '')]
+    return df.loc[(df[WHEN_TO_RUN_SCRIPT].str.lower() == month.lower()) & (df[SCRIPT_RUN] == '')]
 
 def df_filter_course_duplicates(df: pd.DataFrame) -> pd.DataFrame:
     """

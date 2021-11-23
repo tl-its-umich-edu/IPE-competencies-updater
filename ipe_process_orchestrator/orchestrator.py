@@ -26,7 +26,7 @@ class IPECompetenciesOrchestrator:
     def filter_course_list_to_run_and_cleanup(self) -> None:
         """
         1. this filter the courses that need to be run based on the 'Script Run?' and `When does the script run columns
-        2. leading and trailing spaces df.columns
+        2. cleaning leading and trailing spaces df.columns
         3. only courses id list with values that are numbers. Removes Shell, shell, empty, n/a, shell(23333)
         4. drop the duplicates courses id's after the filtering 
         5. the original dataframe will remain same and the filtered dataframe will be created with courseIds
@@ -37,6 +37,7 @@ class IPECompetenciesOrchestrator:
             cleaned_up_with_courses_df = df_remove_non_course_id(courses_to_run_df)
             pure_df_with_no_course_duplicates = df_filter_course_duplicates(cleaned_up_with_courses_df)
             self.filter_df_course_ids = pure_df_with_no_course_duplicates
+            logger.info(f'{len(self.filter_df_course_ids[COL_COURSE_ID].tolist())} courses to run the IPE process: {self.filter_df_course_ids[COL_COURSE_ID].tolist()}')
         except Exception as e:
             logger.error(f'Error in when getting the courses based on the scrip run and when to run script columns: {e}')
             sys.exit(1)
@@ -108,7 +109,6 @@ class IPECompetenciesOrchestrator:
         """
         self.filter_course_list_to_run_and_cleanup()
         if self.filter_df_course_ids.empty:
-            logger.info('No courses qualified to run the IPE process')
             return
         rubric_data: Dict[str, Any] = self.getting_rubrics()
         logger.debug(f'Rubric data: {rubric_data}')

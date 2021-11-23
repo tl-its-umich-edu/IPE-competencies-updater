@@ -1,6 +1,7 @@
+from typing import Any, Dict
 import pytest
 import pandas as pd
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 from ipe_utils.df_utils import current_time
 from constants import(COL_COURSE_ID, SCRIPT_RUN)
 from read_env_props import ReadEnvProps
@@ -70,23 +71,17 @@ def test_trigger_exception_when_filterning_courses(ipe_props):
     assert e.type == SystemExit
     assert e.value.code == 1
 
-def test_no_courses_to_run(ipe_ws_df: pd.DataFrame, ipe_props: ReadEnvProps):
+def test_no_courses_to_run(ipe_ws_df: pd.DataFrame, ipe_props: ReadEnvProps, rubric_simple: Dict[str, Any]):
     """
-    This test will ensure that the no courses qualify to run don't proceed to the next step
+    This test will ensure that if no courses found/filtered to run based on the script run column logic don't proceed to the next step
     """
-    # now = current_time()
-    # preparing the dataframe to have no courses to run
-    # for i in range(0, ipe_ws_df.shape[0]):
-        # ipe_ws_df.at[i, SCRIPT_RUN] = now
-    
+
     with patch.object(IPECompetenciesOrchestrator, 'filter_course_list_to_run_and_cleanup', autospec=True) as mock_empty_filter_df_course_ids:
-        mock_empty_filter_df_course_ids.return_value = pd.DataFrame()
-        IPECompetenciesOrchestrator(ipe_props, ipe_ws_df, None).start_composing_process()
+        with patch.object(IPECompetenciesOrchestrator, 'getting_rubrics', autospec=True) as mock_rubric:
+            mock_empty_filter_df_course_ids.return_value = pd.DataFrame()
+            mock_rubric.return_value = rubric_simple
+            IPECompetenciesOrchestrator(ipe_props, ipe_ws_df, None).start_composing_process()
+    assert mock_rubric.called == False
+    assert mock_empty_filter_df_course_ids.called == True
     
-    mock_empty_filter_df_course_ids.getting_rubrics.assert_not_called()
 
-
-    # orc = IPECompetenciesOrchestrator(ipe_props, ipe_ws_df, None)
-    # orc.start_composing_process()
-    # assert orc.original_df.shape[0] == 16
-    # assert orc.filter_df_course_ids.shape[0] == 0
