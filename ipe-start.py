@@ -18,12 +18,12 @@ def main():
     props: Dict[str, Optional[str]] =  ReadEnvProps().get_env_props()
     ipeData: GetIPEDataFromSheets = GetIPEDataFromSheets(props)
     worksheet: Worksheet = ipeData.get_worksheet_instance()
-    worksheet_dataframe: pd.DataFrame  = pd.DataFrame(worksheet.get_all_records())
+    # worksheet_dataframe: pd.DataFrame  = pd.DataFrame(worksheet.get_all_records())
     api_handler: APIHandler = APIHandler(props)
-    orchestrator: IPECompetenciesOrchestrator = IPECompetenciesOrchestrator(props, worksheet_dataframe, api_handler)
+    orchestrator: IPECompetenciesOrchestrator = IPECompetenciesOrchestrator(props, worksheet, api_handler)
     orchestrator.start_composing_process()
+    logger.info("IPE Process Completed....")
 
-    logger.info(worksheet_dataframe.head())
 
 if __name__ == '__main__':
     main()

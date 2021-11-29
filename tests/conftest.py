@@ -3,9 +3,9 @@ import pytest
 import pandas as pd
 from dotenv import load_dotenv
 from read_env_props import ReadEnvProps
-from ipe_course_data.get_ipe_data_from_gsheets import GetIPEDataFromSheets
 from api_handler.api_calls import APIHandler
-
+from gspread.models import Worksheet, Spreadsheet
+from gspread.auth import Client
 
 # These are test specific to a particular test module
 pytest_plugins = [
@@ -34,6 +34,12 @@ def ipe_ws_df(worksheets_data) -> pd.DataFrame:
     df = pd.DataFrame(worksheets_data)
     return df
 
+@pytest.fixture
+def worksheet():
+    properties = {'sheetId': '12344', 'title': 'Offerings'}
+    client = Client(None)
+    spreadsheet = Spreadsheet(client, properties)
+    return Worksheet(spreadsheet, properties)
 
 @pytest.fixture
 def api_handler(ipe_props):

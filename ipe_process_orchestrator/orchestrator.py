@@ -6,6 +6,7 @@ from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id, df_fil
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
 from ipe_process_orchestrator.rubric_data import IPERubricSimplified
 from ipe_process_orchestrator.assign_competencies import IPECompetenciesAssigner
+from gspread.models import Worksheet
 from api_handler.api_calls import APIHandler
 from constants import (COL_COURSE_ID, COL_COMPETENCIES_RR, COL_COMPETENCIES_TTW, COL_COMPETENCIES_IC,
                        COL_COMPETENCIES_VE, COL_COMPETENCIES_IH, COL_DOSAGE, COL_ASSIGNING_LO_CRITERIA)
@@ -14,11 +15,12 @@ logger = logging.getLogger(__name__)
 
 
 class IPECompetenciesOrchestrator:
-    def __init__(self, props, original_df, api_handler) -> None:
+    def __init__(self, props, worksheet: Worksheet, api_handler) -> None:
         """
         Initialize the orchestrator
         """
-        self.original_df: pd.DataFrame = original_df
+        self.worksheet: Worksheet = worksheet
+        self.original_df: pd.DataFrame = pd.DataFrame(worksheet.get_all_records())
         self.props = props
         self.api_handler: APIHandler = api_handler
         self.filter_df_course_ids = pd.DataFrame()
