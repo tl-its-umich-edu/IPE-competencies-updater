@@ -14,7 +14,7 @@ def test_assign_look_up_with_one_record(ipe_props, api_handler):
     url_partial = f'{CANVAS_URL_BEGIN}/courses/403334/assignment_groups'
     full_url = '/'.join([ipe_props.get('api_url'), url_partial])
 
-    with open('tests/fixtures/assignment_grp_resp.json','r') as f:
+    with open('tests/fixtures/json/assignment_grp_resp.json','r') as f:
         response_json = json.loads(f.read())
     
     response: MagicMock = MagicMock(
@@ -38,7 +38,7 @@ def test_assign_look_up_with_no_record(ipe_props, api_handler):
     url_partial = f'{CANVAS_URL_BEGIN}/courses/403334/assignment_groups'
     full_url = '/'.join([ipe_props.get('api_url'), url_partial])
 
-    with open('tests/fixtures/no_assign_grp_or_assignment.json','r') as f:
+    with open('tests/fixtures/json/no_assign_grp_or_assignment.json','r') as f:
         response_json = json.loads(f.read())
     
     response: MagicMock = MagicMock(
@@ -63,7 +63,7 @@ def test_assignment_lookup_with_multiple_records(ipe_props, api_handler):
     url_partial = f'{CANVAS_URL_BEGIN}/courses/403334/assignment_groups'
     full_url = '/'.join([ipe_props.get('api_url'), url_partial])
 
-    with open('tests/fixtures/assign_grp_with_multiple_assignments.json','r') as f:
+    with open('tests/fixtures/json/assign_grp_with_multiple_assignments.json','r') as f:
         response_json = json.loads(f.read())
     
     response: MagicMock = MagicMock(
@@ -87,7 +87,7 @@ def test_assignment_with_existing_assignment_grp(ipe_props, api_handler):
     url_partial = f'{CANVAS_URL_BEGIN}/courses/403334/assignment_groups/476889'
     full_url = '/'.join([ipe_props.get('api_url'), url_partial])
 
-    with open('tests/fixtures/only_assign_grp_without_assignment.json','r') as f:
+    with open('tests/fixtures/json/only_assign_grp_without_assignment.json','r') as f:
         response_json = json.loads(f.read())
     
     response: MagicMock = MagicMock(
@@ -112,7 +112,7 @@ def test_empty_assign_grp(ipe_props, api_handler):
     url_partial = f'{CANVAS_URL_BEGIN}/courses/403334/assignment_groups/476889'
     full_url = '/'.join([ipe_props.get('api_url'), url_partial])
 
-    with open('tests/fixtures/empty_assign_grp.json','r') as f:
+    with open('tests/fixtures/json/empty_assign_grp.json','r') as f:
         response_json = json.loads(f.read())
     
     response: MagicMock = MagicMock(

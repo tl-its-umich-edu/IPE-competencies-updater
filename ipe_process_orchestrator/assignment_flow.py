@@ -1,6 +1,6 @@
 import logging
 import json
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, NoReturn, Optional, Union
 from requests.models import Response
 from constants import (
     CANVAS_URL_BEGIN, ASSIGNMENT_GROUP_NAME, ASSIGNMENT_NAME)
@@ -118,14 +118,14 @@ class IPEAssignmentFlow:
 
         logger.info(f'Rubrics {self.rubric_id} is assigned to assignment {assignment_id} in courses {self.course_id}')
 
-    def start_assignment_flow(self):
+    def start_assignment_flow(self)-> Union[NoReturn, int]:
         logger.info(
             f'Starting {type(self).__name__}  for course {self.course_id}')
         try:
-            assignment_group_id: int = self._look_up_ipe_assignment()
+            assignment_group_id: Union[List[int], int] = self._look_up_ipe_assignment() 
             if not assignment_group_id:
                 assignment_group_id = self._create_assignment_group()
-            assignment_id: int = self._create_assignment(assignment_group_id)
+            assignment_id: int = self._create_assignment(assignment_group_id ) #type: ignore
             self._assign_ipe_rubrics(assignment_id)
             return assignment_id
 
