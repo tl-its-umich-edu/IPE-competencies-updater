@@ -1,4 +1,4 @@
-import logging, pytest
+import logging
 from typing import List
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id, df_filter_course_based_on_month, current_time, df_filter_course_duplicates
