@@ -26,15 +26,6 @@ def ipe_props():
     envProps: ReadEnvProps = ReadEnvProps()
     return envProps.get_env_props()
 
-@pytest.fixture(scope="module")
-def ipe_workbook(ipe_props) -> List[List[str]]:
-    """
-    fixture for IPE workbook
-    """
-    GetIPEDataFromSheets(ipe_props)
-    ws = GetIPEDataFromSheets(ipe_props).get_data().get_all_records()
-    return ws
-
 @pytest.fixture
 def ipe_ws_df(worksheets_data) -> pd.DataFrame:
     """
@@ -44,6 +35,6 @@ def ipe_ws_df(worksheets_data) -> pd.DataFrame:
     return df
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def api_handler(ipe_props):
     return APIHandler(ipe_props)

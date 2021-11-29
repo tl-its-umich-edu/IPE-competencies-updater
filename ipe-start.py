@@ -17,7 +17,7 @@ def main():
     logger.info("IPE Process Starting....")
     props: Dict[str, Optional[str]] =  ReadEnvProps().get_env_props()
     ipeData: GetIPEDataFromSheets = GetIPEDataFromSheets(props)
-    worksheet: Worksheet = ipeData.get_data()
+    worksheet: Worksheet = ipeData.get_worksheet_instance()
     worksheet_dataframe: pd.DataFrame  = pd.DataFrame(worksheet.get_all_records())
     api_handler: APIHandler = APIHandler(props)
     orchestrator: IPECompetenciesOrchestrator = IPECompetenciesOrchestrator(props, worksheet_dataframe, api_handler)
