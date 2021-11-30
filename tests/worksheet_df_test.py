@@ -54,4 +54,14 @@ def test_duplicate_course_ids_removed(dummy_df: pd.DataFrame):
     """
     df_actual = df_filter_course_duplicates(dummy_df)
     assert df_actual.shape[0] == 7
+
+def test_filter_course_based_on_month_with_extra_spaces(ipe_ws_df: pd.DataFrame):
+    """
+    test for filtering courses based on month value with extra spaces
+    """
+    ipe_ws_df.at[2, WHEN_TO_RUN_SCRIPT] = ' JUNE '
+    ipe_ws_df.at[4, WHEN_TO_RUN_SCRIPT] = '  june'
+    ipe_ws_df.at[6, WHEN_TO_RUN_SCRIPT] = 'JUne  '
+    df_actual = df_filter_course_based_on_month(ipe_ws_df, '  june  ')
+    assert df_actual.shape[0] == 7
     
