@@ -6,10 +6,12 @@ from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id, df_fil
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
 from ipe_process_orchestrator.rubric_data import IPERubricSimplified
 from ipe_process_orchestrator.assign_competencies import IPECompetenciesAssigner
-from gspread.models import Worksheet
+from ipe_process_orchestrator.update_process_run import UpdateProcessRun
+from gspread.models import Worksheet, Cell
 from api_handler.api_calls import APIHandler
 from constants import (COL_COURSE_ID, COL_COMPETENCIES_RR, COL_COMPETENCIES_TTW, COL_COMPETENCIES_IC,
-                       COL_COMPETENCIES_VE, COL_COMPETENCIES_IH, COL_DOSAGE, COL_ASSIGNING_LO_CRITERIA)
+                       COL_COMPETENCIES_VE, COL_COMPETENCIES_IH, COL_DOSAGE, COL_ASSIGNING_LO_CRITERIA,
+                       SCRIPT_RUN)
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +74,10 @@ class IPECompetenciesOrchestrator:
         except Exception as e:
             logger.error(f'Error in getting_rubrics: {e}')
             sys.exit(1)
+    
+    def get_script_run_column_value(self)-> int:
+        single_cell_value: Cell = self.worksheet.findall(SCRIPT_RUN)[0]
+        return single_cell_value.col
 
     def check_competencies_values_given_gsheet(self, course: pd.Series) -> Union[Literal[True], Literal[False]]:
         """
@@ -89,7 +95,7 @@ class IPECompetenciesOrchestrator:
             logger.error(f'Error in getting the ipe competencies values from Google Sheet so skipping competency process for course {course[COL_COURSE_ID]}: {e}')
             return False
 
-    def start_competencies_assigning_process(self, course: pd.Series, rubric_data) -> None:
+    def start_competencies_assigning_process(self, course: pd.Series, rubric_data: Dict[str, Any], script_run_column_value: int) -> None:
         """
         First step in the assiging competencies process is to create the asssignment if it does not exist.
         Second step is to assign competencies to the assignment.
@@ -99,11 +105,13 @@ class IPECompetenciesOrchestrator:
             return
         
         try:
-            if not self.check_competencies_values_given_gsheet(course):
-              return
-            assignment_id: int = self._create_delete_assignment(course)
-            IPECompetenciesAssigner(
-                self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
+            # if not self.check_competencies_values_given_gsheet(course):
+            #   return
+            # assignment_id: int = self._create_delete_assignment(course)
+            # IPECompetenciesAssigner(
+            #     self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
+            UpdateProcessRun(course, self.worksheet, script_run_column_value).update_process_run_finished()
+            
         except Exception as e:
             logger.error(e)
 
@@ -116,5 +124,6 @@ class IPECompetenciesOrchestrator:
             return
         rubric_data: Dict[str, Any] = self.getting_rubrics()
         logger.debug(f'Rubric data: {rubric_data}')
+        script_run_column_value: int = self.get_script_run_column_value()
         self.filter_df_course_ids.apply(
-            lambda course: self.start_competencies_assigning_process(course, rubric_data), axis=1)
+            lambda course: self.start_competencies_assigning_process(course, rubric_data, script_run_column_value), axis=1)
