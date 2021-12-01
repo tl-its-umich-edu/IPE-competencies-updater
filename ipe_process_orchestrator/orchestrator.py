@@ -6,7 +6,7 @@ from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id, df_fil
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
 from ipe_process_orchestrator.rubric_data import IPERubricSimplified
 from ipe_process_orchestrator.assign_competencies import IPECompetenciesAssigner
-from ipe_process_orchestrator.update_process_run import UpdateProcessRun
+from ipe_process_orchestrator.update_process_done import UpdateProcessDone
 from gspread.models import Worksheet, Cell
 from api_handler.api_calls import APIHandler
 from constants import (COL_COURSE_ID, COL_COMPETENCIES_RR, COL_COMPETENCIES_TTW, COL_COMPETENCIES_IC,
@@ -110,7 +110,7 @@ class IPECompetenciesOrchestrator:
             # assignment_id: int = self._create_delete_assignment(course)
             # IPECompetenciesAssigner(
             #     self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
-            UpdateProcessRun(course, self.worksheet, script_run_column_value).update_process_run_finished()
+            UpdateProcessDone(self.props, course, self.worksheet, script_run_column_value).update_process_run_finished()
             
         except Exception as e:
             logger.error(e)

@@ -17,3 +17,5 @@ MAX_REQ_ATTEMPTS = 3
 LOG_LEVEL=DEBUG
 
 UPDATE_SHEET = False
+# Number of seconds to wait incase hit the rate limiting when updating the google sheets
+WAIT_LIMIT=30

@@ -20,6 +20,7 @@ class ReadEnvProps:
         self.env_props['retry_attempts'] = os.environ.get('MAX_REQ_ATTEMPTS')
         self.env_props['script_run_month'] = os.environ.get('SCRIPT_RUN_MONTH')
         self.env_props['update_sheet'] = os.environ.get('UPDATE_SHEET')
+        self.env_props['wait_limit'] = os.environ.get('WAIT_LIMIT')
     
     def get_env_props(self) -> Dict[str, Optional[str]]:
         logger.debug(self.env_props)
