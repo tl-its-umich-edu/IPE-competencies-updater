@@ -1,6 +1,6 @@
 import logging
 import sys
-from typing import Any, Dict, Literal, NoReturn, Union
+from typing import Any, Dict, Literal, NoReturn, Optional, Union
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id, df_filter_course_based_on_month, df_filter_course_duplicates
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
@@ -8,6 +8,7 @@ from ipe_process_orchestrator.rubric_data import IPERubricSimplified
 from ipe_process_orchestrator.assign_competencies import IPECompetenciesAssigner
 from ipe_process_orchestrator.update_process_done import UpdateProcessDone
 from gspread.models import Worksheet, Cell
+from gspread.exceptions import APIError
 from api_handler.api_calls import APIHandler
 from constants import (COL_COURSE_ID, COL_COMPETENCIES_RR, COL_COMPETENCIES_TTW, COL_COMPETENCIES_IC,
                        COL_COMPETENCIES_VE, COL_COMPETENCIES_IH, COL_DOSAGE, COL_ASSIGNING_LO_CRITERIA,
@@ -75,9 +76,22 @@ class IPECompetenciesOrchestrator:
             logger.error(f'Error in getting_rubrics: {e}')
             sys.exit(1)
     
-    def get_script_run_column_value(self)-> int:
-        single_cell_value: Cell = self.worksheet.findall(SCRIPT_RUN)[0]
-        return single_cell_value.col
+    def get_script_run_column_value(self)-> Optional[int]:
+        """
+        Get the script run column value from the Google Sheet. If the value is not given, then return None.
+        """
+        try:
+            single_cell_value: Cell = self.worksheet.findall(SCRIPT_RUN)[0]
+            return single_cell_value.col
+        except (APIError, Exception) as e:
+          if isinstance(e, APIError):
+            # This is highly unlikely to happen, but if it does, we will try again in the UpdateProcessDone class
+            logger.error(f"Possibly hit the Google API rate limits when getting the script run column value, more details {e}")
+          else:
+            logger.error(f"Error when getting the script run column value, more details {e}")
+          return None
+
+        
 
     def check_competencies_values_given_gsheet(self, course: pd.Series) -> Union[Literal[True], Literal[False]]:
         """
