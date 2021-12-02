@@ -25,7 +25,7 @@ class IPECompetenciesOrchestrator:
 
     def filter_course_list_to_run_and_cleanup(self) -> None:
         """
-        1. this filter the courses that need to be run based on the 'Script Run?' and `When does the script run columns
+        1. this filter the courses that need to be run based on the 'Script Run?' and 'When does script run? (Feb, June, Oct) columns
         2. cleaning leading and trailing spaces df.columns
         3. only courses id list with values that are numbers. Removes Shell, shell, empty, n/a, shell(23333)
         4. drop the duplicates courses id's after the filtering 
