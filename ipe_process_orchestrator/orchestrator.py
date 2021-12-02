@@ -7,7 +7,7 @@ from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
 from ipe_process_orchestrator.rubric_data import IPERubricSimplified
 from ipe_process_orchestrator.assign_competencies import IPECompetenciesAssigner
 from ipe_process_orchestrator.update_process_done import UpdateProcessDone
-from gspread.models import Worksheet, Cell
+from gspread import Worksheet, Cell
 from gspread.exceptions import APIError
 from api_handler.api_calls import APIHandler
 from constants import (COL_COURSE_ID, COL_COMPETENCIES_RR, COL_COMPETENCIES_TTW, COL_COMPETENCIES_IC,
@@ -119,11 +119,14 @@ class IPECompetenciesOrchestrator:
             return
         
         try:
-            # if not self.check_competencies_values_given_gsheet(course):
-            #   return
-            # assignment_id: int = self._create_delete_assignment(course)
-            # IPECompetenciesAssigner(
-            #     self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
+            if not self.check_competencies_values_given_gsheet(course):
+              return
+            assignment_id: int = self._create_delete_assignment(course)
+            IPECompetenciesAssigner(
+                self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
+            if self.props.get('update_sheet') != 'True':
+                logger.info(f'Skipping updating the google sheet for course {course[COL_COURSE_ID]}')
+                return
             UpdateProcessDone(self.props, course, self.worksheet, script_run_column_value).update_process_run_finished()
             
         except Exception as e:

@@ -6,7 +6,8 @@ from typing import Union, NoReturn
 
 from gspread.exceptions import APIError, WorksheetNotFound
 from ipe_course_data.get_ipe_data import GetIPEData
-from gspread.models import Worksheet, Spreadsheet
+from gspread import Spreadsheet
+from gspread import Worksheet
 from gspread.auth import Client
 from constants import (SHEET_NAME)
 logger = logging.getLogger(__name__)

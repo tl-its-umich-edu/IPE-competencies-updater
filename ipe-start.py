@@ -3,7 +3,7 @@ from typing import Dict, Optional
 import pandas as pd
 from dotenv import load_dotenv
 from read_env_props import ReadEnvProps
-from gspread.models import Worksheet
+from gspread import Worksheet
 from ipe_course_data.get_ipe_data_from_gsheets import GetIPEDataFromSheets
 from ipe_process_orchestrator.orchestrator import IPECompetenciesOrchestrator
 from api_handler.api_calls import APIHandler
@@ -18,7 +18,6 @@ def main():
     props: Dict[str, Optional[str]] =  ReadEnvProps().get_env_props()
     ipeData: GetIPEDataFromSheets = GetIPEDataFromSheets(props)
     worksheet: Worksheet = ipeData.get_worksheet_instance()
-    # worksheet_dataframe: pd.DataFrame  = pd.DataFrame(worksheet.get_all_records())
     api_handler: APIHandler = APIHandler(props)
     orchestrator: IPECompetenciesOrchestrator = IPECompetenciesOrchestrator(props, worksheet, api_handler)
     orchestrator.start_composing_process()

@@ -1,7 +1,7 @@
 import logging, time
 from typing import Dict, List, Optional
 import pandas as pd
-from gspread.models import Worksheet, Cell
+from gspread import Worksheet, Cell
 from gspread.exceptions import APIError
 from constants import (COL_COURSE_ID, SCRIPT_RUN)
 from ipe_utils.df_utils import current_time
@@ -28,10 +28,10 @@ class UpdateProcessDone(object):
       while run_loop_when_rate_limiting and count <= int(self.props.get('retry_attempts')):
         try:
           if self.script_run_column_value is None:
-            # try again to get the column value
+            # try again to get the Script Run? column value
             single_cell_value: Cell = self.worksheet.findall(SCRIPT_RUN)[0]
             self.script_run_column_value = single_cell_value.col
-        # if a course is entered in multiple rows, then update all the rows script run? column
+        # if a course is entered in multiple rows, then update all the rows of script run? column
           courses_list: List[Cell] = self.worksheet.findall(str(self.course[COL_COURSE_ID]))
           for course in courses_list:
             row = course.row

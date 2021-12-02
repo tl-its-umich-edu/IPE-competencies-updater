@@ -1,15 +1,15 @@
 from typing import Dict
 import pandas as pd
 from typing import Dict
-from gspread.models import Cell
+from gspread import Cell
 from unittest import mock
 from unittest.mock import  MagicMock, patch
 from ipe_process_orchestrator.update_process_done import UpdateProcessDone
 from requests import Response
 from gspread.exceptions import APIError
 
-@mock.patch('gspread.models.Worksheet.findall', side_effect=[[Cell(1, 28,'Script Run?')], [Cell(12, 28,'222222')]])
-@mock.patch('gspread.models.Worksheet.update_cells', return_value={'spreadsheetId': '1tQoEdYt',
+@mock.patch('gspread.Worksheet.findall', side_effect=[[Cell(1, 28,'Script Run?')], [Cell(12, 28,'222222')]])
+@mock.patch('gspread.Worksheet.update_cells', return_value={'spreadsheetId': '1tQoEdYt',
 'updatedRange': 'Offerings!AF2:AF165','updatedRows': 1,'updatedColumns': 1,'updatedCells': 1})
 def test_update_process_success_case(mock_uc: MagicMock, mock_fa: MagicMock, ipe_props,single_ipe_offering,worksheet):
   """
@@ -30,16 +30,16 @@ def test_update_process_read_operation_google_sheet_failure_case(ipe_props: Dict
     )
   course = pd.Series(single_ipe_offering)
   ipe_props.update({'wait_limit': '1'})
-  with patch('gspread.models.Worksheet.findall') as mock_find:
+  with patch('gspread.Worksheet.findall') as mock_find:
     mock_find.side_effect = [APIError(response), APIError(response), APIError(response)]
     UpdateProcessDone(ipe_props,course,worksheet, 20).update_process_run_finished()
   mock_find.call_count == 3
 
-@mock.patch('gspread.models.Worksheet.findall', side_effect=[[Cell(1, 28,'Script Run?')], [Cell(12, 28,'222222')]])
+@mock.patch('gspread.Worksheet.findall', side_effect=[[Cell(1, 28,'Script Run?')], [Cell(12, 28,'222222')]])
 def test_update_process_write_operation_google_sheet_failure_case(ipe_props: Dict, single_ipe_offering, worksheet):
     
   """
-  This will test write opration to google sheets is failed
+  This will test write operation to google sheets is failed
   """
   response: MagicMock = MagicMock(
         spec=Response,
@@ -47,13 +47,13 @@ def test_update_process_write_operation_google_sheet_failure_case(ipe_props: Dic
     )
   course = pd.Series(single_ipe_offering)
   ipe_props.update({'wait_limit': '1'})
-  with patch('gspread.models.Worksheet.update_cells') as mock_write:
+  with patch('gspread.Worksheet.update_cells') as mock_write:
     mock_write.side_effect = [APIError(response), APIError(response), APIError(response)]
     UpdateProcessDone(ipe_props,course,worksheet, 20).update_process_run_finished()
   mock_write.call_count == 3
 
-@mock.patch('gspread.models.Worksheet.findall', side_effect=[[Cell(1, 28,'Script Run?')], [Cell(12, 28,'222222')]])
-@mock.patch('gspread.models.Worksheet.update_cells', return_value={'spreadsheetId': '1tQoEdYt',
+@mock.patch('gspread.Worksheet.findall', side_effect=[[Cell(1, 28,'Script Run?')], [Cell(12, 28,'222222')]])
+@mock.patch('gspread.Worksheet.update_cells', return_value={'spreadsheetId': '1tQoEdYt',
 'updatedRange': 'Offerings!AF2:AF165','updatedRows': 1,'updatedColumns': 1,'updatedCells': 1})
 def test_script_run_column_value_not_given(mock_update: MagicMock, mock_findall: MagicMock, ipe_props: Dict, single_ipe_offering, worksheet):
   """
