@@ -1,4 +1,4 @@
--e git+https://github.com/pushyamig/api-utils-python@i39_upgrade_libraries#egg=umich-api
+-e git+https://github.com/tl-its-umich-edu/api-utils-python@v2.1#egg=umich-api
 pandas==1.3.4
 python-dotenv==0.19.2
 mypy==0.910
