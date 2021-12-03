@@ -119,8 +119,6 @@ class IPECompetenciesOrchestrator:
             return
         
         try:
-            if not self.check_competencies_values_given_gsheet(course):
-              return
             assignment_id: int = self._create_delete_assignment(course)
             IPECompetenciesAssigner(
                 self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
