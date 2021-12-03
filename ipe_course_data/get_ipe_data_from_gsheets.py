@@ -23,7 +23,6 @@ class GetIPEDataFromSheets(GetIPEData):
         """
         self.sheet_id = ipe_props.get('sheet_id')
         self.service_account_path = ipe_props.get('service_account_path')
-        self.is_docker_run = ipe_props.get('is_docker_run')
 
     def get_data(self) -> Union[Worksheet, NoReturn]:
         """

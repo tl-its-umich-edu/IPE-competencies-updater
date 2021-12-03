@@ -26,8 +26,7 @@ def ipe_props():
     envProps: ReadEnvProps = ReadEnvProps()
     return envProps.get_env_props()
 
-
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def ipe_workbook(ipe_props) -> List[List[str]]:
     """
     fixture for IPE workbook
@@ -36,13 +35,12 @@ def ipe_workbook(ipe_props) -> List[List[str]]:
     ws = GetIPEDataFromSheets(ipe_props).get_data().get_all_records()
     return ws
 
-
-@pytest.fixture(scope="session")
-def ipe_ws_df(ipe_workbook) -> pd.DataFrame:
+@pytest.fixture
+def ipe_ws_df(worksheets_data) -> pd.DataFrame:
     """
     fixture for sample dataframe
     """
-    df = pd.DataFrame(ipe_workbook)
+    df = pd.DataFrame(worksheets_data)
     return df
 
 
