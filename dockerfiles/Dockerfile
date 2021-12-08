@@ -1,5 +1,6 @@
 FROM python:3.9-slim
 
+WORKDIR /app
 # Installs needed Linux packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -16,7 +17,6 @@ RUN ls -la
 # Install pip requirements
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-WORKDIR /app
 
 COPY . /app
 
