@@ -14,10 +14,10 @@ ENV PYTHONUNBUFFERED=1
 RUN ls -la
 
 # Install pip requirements
-COPY requirements.txt /requirements.txt
+WORKDIR /app
+COPY requirements.txt /app
 RUN pip install -r requirements.txt
 
-WORKDIR /app
 COPY . /app
 
 CMD ["./start.sh"]
