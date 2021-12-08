@@ -14,9 +14,9 @@ ENV PYTHONUNBUFFERED=1
 RUN ls -la
 
 # Install pip requirements
-WORKDIR /app
-COPY requirements.txt /app
+COPY requirements.txt .
 RUN pip install -r requirements.txt
+WORKDIR /app
 
 COPY . /app
 
