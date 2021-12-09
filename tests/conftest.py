@@ -1,6 +1,6 @@
 from typing import List
 from unittest import mock
-import pytest
+import pytest, os
 import pandas as pd
 from dotenv import load_dotenv
 from unittest.mock import patch
@@ -24,7 +24,9 @@ def ipe_props():
     """
     Fixture for Env properties
     """
-    load_dotenv()
+    ENV_PATH: str = print('Please set set the Env file path') if os.getenv('IPE_ENV_FILE') is None else os.getenv('IPE_ENV_FILE') 
+    load_dotenv(dotenv_path=ENV_PATH, verbose=True)
+    # load_dotenv()
     envProps: ReadEnvProps = ReadEnvProps()
     return envProps.get_env_props()
 
