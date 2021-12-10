@@ -6,7 +6,9 @@ from typing import Union, NoReturn
 
 from gspread.exceptions import APIError, WorksheetNotFound
 from ipe_course_data.get_ipe_data import GetIPEData
-from gspread.models import Worksheet
+from gspread import Spreadsheet
+from gspread import Worksheet
+from gspread.auth import Client
 from constants import (SHEET_NAME)
 logger = logging.getLogger(__name__)
 
@@ -24,7 +26,7 @@ class GetIPEDataFromSheets(GetIPEData):
         self.sheet_id = ipe_props.get('sheet_id')
         self.service_account_path = ipe_props.get('service_account_path')
 
-    def get_data(self) -> Union[Worksheet, NoReturn]:
+    def get_worksheet_instance(self) -> Union[Worksheet, NoReturn]:
         """
         Get all data from Google Sheets, even if filters applied to the sheet.
 
@@ -36,10 +38,10 @@ class GetIPEDataFromSheets(GetIPEData):
                 f'Service account file not found: {self.service_account_path}')
             sys.exit(1)
         try:
-            credentials = gs.service_account(self.service_account_path)
-            sheets = credentials.open_by_url(
+            credentials: Client = gs.service_account(self.service_account_path)
+            sheets: Spreadsheet = credentials.open_by_url(
                 f'{self.GOOGLE_SHEETS_URL}{self.sheet_id}')
-            worksheet = sheets.worksheet(SHEET_NAME)
+            worksheet: Worksheet = sheets.worksheet(SHEET_NAME)
             return worksheet
         except (APIError, WorksheetNotFound, Exception) as e:
             if isinstance(e, WorksheetNotFound):

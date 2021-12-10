@@ -1,24 +1,29 @@
 import logging
 import sys
-from typing import Any, Dict, Literal, NoReturn, Union
+from typing import Any, Dict, Literal, NoReturn, Optional, Union
 import pandas as pd
 from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id, df_filter_course_based_on_month, df_filter_course_duplicates
 from ipe_process_orchestrator.assignment_flow import IPEAssignmentFlow
 from ipe_process_orchestrator.rubric_data import IPERubricSimplified
 from ipe_process_orchestrator.assign_competencies import IPECompetenciesAssigner
+from ipe_process_orchestrator.update_process_done import UpdateProcessDone
+from gspread import Worksheet, Cell
+from gspread.exceptions import APIError
 from api_handler.api_calls import APIHandler
 from constants import (COL_COURSE_ID, COL_COMPETENCIES_RR, COL_COMPETENCIES_TTW, COL_COMPETENCIES_IC,
-                       COL_COMPETENCIES_VE, COL_COMPETENCIES_IH, COL_DOSAGE, COL_ASSIGNING_LO_CRITERIA)
+                       COL_COMPETENCIES_VE, COL_COMPETENCIES_IH, COL_DOSAGE, COL_ASSIGNING_LO_CRITERIA,
+                       SCRIPT_RUN)
 
 logger = logging.getLogger(__name__)
 
 
 class IPECompetenciesOrchestrator:
-    def __init__(self, props, original_df, api_handler) -> None:
+    def __init__(self, props, worksheet: Worksheet, api_handler) -> None:
         """
         Initialize the orchestrator
         """
-        self.original_df: pd.DataFrame = original_df
+        self.worksheet: Worksheet = worksheet
+        self.original_df: pd.DataFrame = pd.DataFrame(worksheet.get_all_records())
         self.props = props
         self.api_handler: APIHandler = api_handler
         self.filter_df_course_ids = pd.DataFrame()
@@ -70,6 +75,23 @@ class IPECompetenciesOrchestrator:
         except Exception as e:
             logger.error(f'Error in getting_rubrics: {e}')
             sys.exit(1)
+    
+    def get_script_run_column_value(self)-> Optional[int]:
+        """
+        Get the script run column value from the Google Sheet. If the value is not given, then return None.
+        """
+        try:
+            single_cell_value: Cell = self.worksheet.findall(SCRIPT_RUN)[0]
+            return single_cell_value.col
+        except (APIError, Exception) as e:
+          if isinstance(e, APIError):
+            # This is highly unlikely to happen, but if it does, we will try again in the UpdateProcessDone class
+            logger.error(f"Possibly hit the Google API rate limits when getting the script run column value, more details {e}")
+          else:
+            logger.error(f"Error when getting the script run column value, more details {e}")
+          return None
+
+        
 
     def check_competencies_values_given_gsheet(self, course: pd.Series) -> Union[Literal[True], Literal[False]]:
         """
@@ -87,7 +109,7 @@ class IPECompetenciesOrchestrator:
             logger.error(f'Error in getting the ipe competencies values from Google Sheet so skipping competency process for course {course[COL_COURSE_ID]}: {e}')
             return False
 
-    def start_competencies_assigning_process(self, course: pd.Series, rubric_data) -> None:
+    def start_competencies_assigning_process(self, course: pd.Series, rubric_data: Dict[str, Any], script_run_column_value: int) -> None:
         """
         First step in the assiging competencies process is to create the asssignment if it does not exist.
         Second step is to assign competencies to the assignment.
@@ -100,6 +122,11 @@ class IPECompetenciesOrchestrator:
             assignment_id: int = self._create_delete_assignment(course)
             IPECompetenciesAssigner(
                 self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
+            if self.props.get('update_sheet') != 'True':
+                logger.info(f'Skipping updating the google sheet for course {course[COL_COURSE_ID]}')
+                return
+            UpdateProcessDone(self.props, course, self.worksheet, script_run_column_value).update_process_run_finished()
+            
         except Exception as e:
             logger.error(e)
 
@@ -112,5 +139,6 @@ class IPECompetenciesOrchestrator:
             return
         rubric_data: Dict[str, Any] = self.getting_rubrics()
         logger.debug(f'Rubric data: {rubric_data}')
+        script_run_column_value: int = self.get_script_run_column_value()
         self.filter_df_course_ids.apply(
-            lambda course: self.start_competencies_assigning_process(course, rubric_data), axis=1)
+            lambda course: self.start_competencies_assigning_process(course, rubric_data, script_run_column_value), axis=1)

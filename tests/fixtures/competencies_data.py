@@ -8,7 +8,7 @@ def single_ipe_offering():
   'Lead Faculty Member 1': 'Jane Doe', 'Lead Faculty Member 2': 'JohnDoe', 'Lead Faculty 1 School': 'Dentistry', 'Lead Faculty 2 School': 'Public Health', 
   'Lead Faculty 1 unique name': 'JaDoe', 'Lead Faculty 2 unique name': 'Jdoe', 
   'Format': 'Online', 'Instructional Team\\n(SEE LOOKUP TABLE)': '', 'Program offering to students\\n(SEE LOOKUP TABLE)': '', 
-  'Course #s (if applicable)': '', 'Window used': 'None', 'IPE Assessments': 'SPICE-R2 ', 'Canvas Site or Shell Course': '', 'Canvas Course ID': '448447',
+  'Course #s (if applicable)': '', 'Window used': 'None', 'IPE Assessments': 'SPICE-R2 ', 'Canvas Site or Shell Course': '', 'Canvas Course ID': 448447,
   'Roles/Responsibilities': 'N/A', 'Interprofessional Communication': 'N/A', 'Team/Teamwork': 'Introduce', 'Values/Ethics': 'N/A', 'Intercultural Humility': 'N/A', 
   'Dosage (contact hours)': 4, 'Criteria for Assigning Outcomes in Canvas': 'Passing - 70% or Higher', 'Notes': '', 
   'When does script run? (Feb, June, Oct)': 'June', 'Script Run?': ''}

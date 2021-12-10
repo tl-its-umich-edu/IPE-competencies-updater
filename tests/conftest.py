@@ -1,11 +1,13 @@
 from typing import List
+from unittest import mock
 import pytest
 import pandas as pd
 from dotenv import load_dotenv
+from unittest.mock import patch
 from read_env_props import ReadEnvProps
-from ipe_course_data.get_ipe_data_from_gsheets import GetIPEDataFromSheets
 from api_handler.api_calls import APIHandler
-
+from gspread import Worksheet, Spreadsheet
+from gspread.auth import Client
 
 # These are test specific to a particular test module
 pytest_plugins = [
@@ -26,15 +28,6 @@ def ipe_props():
     envProps: ReadEnvProps = ReadEnvProps()
     return envProps.get_env_props()
 
-@pytest.fixture(scope="module")
-def ipe_workbook(ipe_props) -> List[List[str]]:
-    """
-    fixture for IPE workbook
-    """
-    GetIPEDataFromSheets(ipe_props)
-    ws = GetIPEDataFromSheets(ipe_props).get_data().get_all_records()
-    return ws
-
 @pytest.fixture
 def ipe_ws_df(worksheets_data) -> pd.DataFrame:
     """
@@ -43,7 +36,20 @@ def ipe_ws_df(worksheets_data) -> pd.DataFrame:
     df = pd.DataFrame(worksheets_data)
     return df
 
+@pytest.fixture
+@mock.patch('gspread.Spreadsheet.fetch_sheet_metadata')
+def spreadsheet(moch_ws):
+    properties = {'sheetId': '12344', 'title': 'Offerings'}
+    client = Client(None)
+    moch_ws.return_value = {"properties": {'title': 'Master Spreadsheet', 'locale': 'en_US', 'autoRecalc': 'ON_CHANGE', 'timeZone': 'America/Detroit', 
+    'defaultFormat': {'backgroundColor': {'red': 1, 'green': 1, 'blue': 1}, 'padding': {'top': 2, 'right': 3, 'bottom': 2, 'left': 3}}}}
+    return Spreadsheet(client, properties)
+    
+@pytest.fixture
+def worksheet(spreadsheet):
+    properties = {'id': '12344', 'title': 'Offerings'}
+    return Worksheet(spreadsheet, properties)
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def api_handler(ipe_props):
     return APIHandler(ipe_props)
