@@ -17,4 +17,4 @@ services:
       - IPE_ENV_FILE=/secrets/ipe/.env
     volumes:
       - ${HOME}/secrets:/secrets
-    command: pytest --log-cli-level=DEBUG
+    command: pytest --log-cli-level=INFO
