@@ -119,12 +119,12 @@ class IPECompetenciesOrchestrator:
             return
         
         try:
-            # assignment_id: int = self._create_delete_assignment(course)
-            # IPECompetenciesAssigner(
-            #     self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
-            # if self.props.get('update_sheet') != 'True':
-            #     logger.info(f'Skipping updating the google sheet for course {course[COL_COURSE_ID]}')
-            #     return
+            assignment_id: int = self._create_delete_assignment(course)
+            IPECompetenciesAssigner(
+                self.api_handler, assignment_id, course, rubric_data).start_assigning_process()
+            if self.props.get('update_sheet') != 'True':
+                logger.info(f'Skipping updating the google sheet for course {course[COL_COURSE_ID]}')
+                return
             UpdateProcessDone(self.props, course, self.worksheet, script_run_column_value).update_process_run_finished()
             
         except Exception as e:
@@ -137,8 +137,7 @@ class IPECompetenciesOrchestrator:
         self.filter_course_list_to_run_and_cleanup()
         if self.filter_df_course_ids.empty:
             return
-        # rubric_data: Dict[str, Any] = self.getting_rubrics()
-        rubric_data: Dict[str, Any] = {}
+        rubric_data: Dict[str, Any] = self.getting_rubrics()
         logger.debug(f'Rubric data: {rubric_data}')
         script_run_column_value: int = self.get_script_run_column_value()
         self.filter_df_course_ids.apply(

@@ -7,9 +7,8 @@ from ipe_course_data.get_ipe_data_from_gsheets import GetIPEDataFromSheets
 from ipe_process_orchestrator.orchestrator import IPECompetenciesOrchestrator
 from api_handler.api_calls import APIHandler
 
-# ENV_PATH: str = print('Please set set the Env file path') if os.getenv('IPE_ENV_FILE') is None else os.getenv('IPE_ENV_FILE') 
-# load_dotenv(dotenv_path=ENV_PATH, verbose=True)
-load_dotenv()
+ENV_PATH: str =  os.getenv('IPE_ENV_FILE')
+load_dotenv(dotenv_path=ENV_PATH, verbose=True) if ENV_PATH is not None else load_dotenv()
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=os.getenv('LOG_LEVEL') if os.getenv('LOG_LEVEL') else 'INFO', format='%(name)s - %(levelname)s - %(message)s')
