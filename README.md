@@ -4,8 +4,8 @@ This Project is for running the InterProfessional Education(IPE) courses data fo
 
 ## Script Run and tests
 1. Configurations before running the script
-    1. create `.env` file and place it in the project root level, copy the content from `config/env_sample.txt`. Change as needed 
-    2. Google Service account JSON file is needed to read the google spreadsheet content. Create the folder structure `secrets/ipe/` inside home directory and add `ipe_gserviceaccount.json` inside it. You can find this file [Dropbox](https://www.dropbox.com/home/TL%20Security%20files/IPE%20Process)
+    1. Create the folder structure `secrets/ipe/` inside home directory. create `.env` file and place it.  copy the content from `config/env_sample.txt`. Change as needed 
+    2. Google Service account JSON file is needed to read the google spreadsheet content. Add `ipe_gserviceaccount.json` inside `secrets/ipe/`. You can find this file [Dropbox](https://www.dropbox.com/home/TL%20Security%20files/IPE%20Process)
     3. The Google service account email address need to be added to the google sheets with `Editor` Permission.
     4. pytest is used for running test.
 2. Docker run 
@@ -14,8 +14,9 @@ This Project is for running the InterProfessional Education(IPE) courses data fo
    3. Running the test `docker compose up test`
    4. Running both job abd test `docker compose up` . Note: I would rather avoid this step since it will run both and while reviewing and testing it will be confusing
 3. Script Command-line Run
-   1. Main Process `python3 ipe-start.py`. This is useful for debugging.
-   2. Pytest: `pytest`
+   1. Set environmental variable as `IPE_ENV_FILE=/path/to/dot.envfile` in your shell configuration file
+   2. Main Process `python3 ipe-start.py`. This is useful for debugging.
+   3. Pytest: `pytest`
 
 ## VS Code Debugging
 1. Go to the `Run and Debug` tab in the left navgation, mark a break point in code, click the play button and it should stop at the breakpoint.

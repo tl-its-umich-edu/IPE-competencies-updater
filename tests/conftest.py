@@ -1,6 +1,6 @@
 from typing import List
 from unittest import mock
-import pytest
+import pytest, os
 import pandas as pd
 from dotenv import load_dotenv
 from unittest.mock import patch
@@ -24,9 +24,11 @@ def ipe_props():
     """
     Fixture for Env properties
     """
-    load_dotenv()
-    envProps: ReadEnvProps = ReadEnvProps()
-    return envProps.get_env_props()
+    props_env= {'sheet_id': 'someGoogleSheetID', 'service_account_path': '/some/path/ipe_gserviceaccount.json', 
+    'api_client': 'api-client', 'api_secret': 'api_secret', 
+    'api_url': 'http://api-util', 'rubric_id': '1234', 'rubric_account_id': '12454', 'retry_attempts': '3', 
+    'script_run_month': 'June', 'update_sheet': 'True', 'wait_limit': '30'}
+    return props_env
 
 @pytest.fixture
 def ipe_ws_df(worksheets_data) -> pd.DataFrame:

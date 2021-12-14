@@ -5,14 +5,16 @@ services:
     build:
       context: .
       dockerfile: ./dockerfiles/Dockerfile
-    env_file: .env
+    environment:
+      - IPE_ENV_FILE=/secrets/ipe/.env
     volumes:
       - ${HOME}/secrets:/secrets
   test: 
     build:
       context: .
       dockerfile: ./dockerfiles/Dockerfile
-    env_file: .env
+    environment:
+      - IPE_ENV_FILE=/secrets/ipe/.env
     volumes:
       - ${HOME}/secrets:/secrets
-    command: pytest --log-cli-level=DEBUG
+    command: pytest --log-cli-level=INFO
