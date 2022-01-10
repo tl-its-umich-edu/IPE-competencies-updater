@@ -2,6 +2,7 @@ import pandas as pd
 from datetime import datetime
 from constants import (WHEN_TO_RUN_SCRIPT, SCRIPT_RUN, COL_COURSE_ID)
 import logging
+from pytz import timezone
 
 logger = logging.getLogger(__name__)
 
@@ -37,4 +38,5 @@ def current_time()-> str:
     """
     Return current time in format: YYYY-MM-DD HH:MM:SS
     """
-    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    est = timezone('US/Eastern')
+    return datetime.now(est).strftime('%Y-%m-%d %H:%M:%S')

@@ -63,3 +63,9 @@ def enrollment_response():
   with open('tests/fixtures/json/enrollment_response.json','r') as f:
         enrollment_json = json.loads(f.read())
   return enrollment_json
+
+@pytest.fixture
+def enrollment_response_with_duplicates():
+  with open('tests/fixtures/json/enrollment_response_with_duplicates.json','r') as f:
+        enrollment_dup_json = json.loads(f.read())
+  return enrollment_dup_json

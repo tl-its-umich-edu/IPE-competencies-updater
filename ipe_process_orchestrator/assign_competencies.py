@@ -52,8 +52,10 @@ class IPECompetenciesAssigner:
             logging.debug(f'Params for next page: {page_info}')
             student_list_payload = page_info
             page_num += 1
-      logger.info(f'{len(students_with_grades)} active enrolled students may receive IPE competencies in the course {self.course[COL_COURSE_ID]}')
-      return students_with_grades
+      
+      student_grade_with_out_duplicates = pd.DataFrame(students_with_grades).drop_duplicates(subset='student_canvas_id').to_dict('records')
+      logger.info(f'{len(student_grade_with_out_duplicates)} active enrolled students may receive IPE competencies in the course {self.course[COL_COURSE_ID]}')
+      return student_grade_with_out_duplicates
       
     def get_competency_payload(self) -> Dict[str, Any]:
       competency_payload: Dict[str, Any] = dict()

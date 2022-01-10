@@ -118,6 +118,25 @@ def test_more_enrollments_are_fetched(api_handler, ipe_props, enrollment_respons
   assert mock_enrollment.call_count == 2
   assert mock_next_page.call_count == 2
 
+def test_get_enrollments_with_duplicate_enrollments(api_handler, ipe_props, enrollment_response_with_duplicates, single_ipe_offering):
+  url_partial = f'{CANVAS_URL_BEGIN}/courses/11111/enrollments'
+  full_url = '/'.join([ipe_props.get('api_url'), url_partial])
+  enrollment_resp1: MagicMock = MagicMock(
+        spec=Response,
+        status_code=200,
+        ok=True,
+        text=json.dumps(enrollment_response_with_duplicates),
+        url=full_url
+    )
+  with patch.object(APIHandler, 'api_call_with_retries',autospec=True) as mock_enrollment:
+    with patch.object(APIHandler, 'get_next_page',autospec=True) as mock_next_page:
+      mock_enrollment.return_value = enrollment_resp1
+      mock_next_page.return_value = None
+      course = pd.Series(single_ipe_offering)
+      students_grades_actual = IPECompetenciesAssigner(api_handler, '448447122', course, {}).get_student_list_with_course_grades()
+    assert len(students_grades_actual) == 10
+
+
 def test_competencies_assigned_to_students_with_all_success(ipe_props, student_data, api_handler, single_ipe_offering, rubric_simple):
   """
   This tests that the competencies are assigned to the students

@@ -1,0 +1,233 @@
+[
+  {
+    "course_id": 429487,
+    "id": 6323931,
+    "user_id": 151,
+    "course_section_id": 486513,
+    "root_account_id": 1,
+    "type": "StudentEnrollment",
+    "limit_privileges_to_course_section": false,
+    "enrollment_state": "active",
+    "role": "StudentEnrollment",
+    "grades": {
+      "current_grade": null,
+      "current_score": 100.0,
+      "final_grade": null,
+      "final_score": 94.12
+    },
+    "user": {
+      "id": 151,
+      "name": "Student, 1"
+    }
+  },
+  {
+    "course_id": 429487,
+    "id": 6323932,
+    "user_id": 152,
+    "course_section_id": 486513,
+    "root_account_id": 1,
+    "type": "StudentEnrollment",
+    "limit_privileges_to_course_section": false,
+    "enrollment_state": "active",
+    "role": "StudentEnrollment",
+    "grades": {
+      "current_grade": null,
+      "current_score": 100.0,
+      "final_grade": null,
+      "final_score": 64.12
+    },
+    "user": {
+      "id": 152,
+      "name": "Student, 2"
+    }
+  },
+  {
+    "course_id": 429487,
+    "id": 6323933,
+    "user_id": 153,
+    "course_section_id": 486513,
+    "root_account_id": 1,
+    "type": "StudentEnrollment",
+    "limit_privileges_to_course_section": false,
+    "enrollment_state": "active",
+    "role": "StudentEnrollment",
+    "grades": {
+      "current_grade": null,
+      "current_score": 100.0,
+      "final_grade": null,
+      "final_score": 74.12
+    },
+    "user": {
+      "id": 153,
+      "name": "Student, 3"
+    }
+  },
+  {
+    "course_id": 429487,
+    "id": 6323934,
+    "user_id": 154,
+    "course_section_id": 486513,
+    "root_account_id": 1,
+    "type": "StudentEnrollment",
+    "limit_privileges_to_course_section": false,
+    "enrollment_state": "active",
+    "role": "StudentEnrollment",
+    "grades": {
+      "current_grade": null,
+      "current_score": 100.0,
+      "final_grade": null,
+      "final_score": 80.12
+    },
+    "user": {
+      "id": 154,
+      "name": "Student, 4"
+    }
+  },
+  {
+    "course_id": 429487,
+    "id": 6323935,
+    "user_id": 155,
+    "course_section_id": 486513,
+    "root_account_id": 1,
+    "type": "StudentEnrollment",
+    "limit_privileges_to_course_section": false,
+    "enrollment_state": "active",
+    "role": "StudentEnrollment",
+    "grades": {
+      "current_grade": null,
+      "current_score": 100.0,
+      "final_grade": null,
+      "final_score": 60.12
+    },
+    "user": {
+      "id": 155,
+      "name": "Student, 5"
+    }
+  },
+  {
+    "course_id": 429487,
+    "id": 6323936,
+    "user_id": 156,
+    "course_section_id": 486513,
+    "root_account_id": 1,
+    "type": "StudentEnrollment",
+    "limit_privileges_to_course_section": false,
+    "enrollment_state": "active",
+    "role": "StudentEnrollment",
+    "grades": {
+      "current_grade": null,
+      "current_score": 100.0,
+      "final_grade": null,
+      "final_score": 80.12
+    },
+    "user": {
+      "id": 156,
+      "name": "Student, 6"
+    }
+  },
+  {
+    "course_id": 429487,
+    "id": 6323937,
+    "user_id": 157,
+    "course_section_id": 486513,
+    "root_account_id": 1,
+    "type": "StudentEnrollment",
+    "limit_privileges_to_course_section": false,
+    "enrollment_state": "active",
+    "role": "StudentEnrollment",
+    "grades": {
+      "current_grade": null,
+      "current_score": 100.0,
+      "final_grade": null,
+      "final_score": 77.12
+    },
+    "user": {
+      "id": 157,
+      "name": "Student, 7"
+    }
+  },
+  {
+    "course_id": 429487,
+    "id": 6323938,
+    "user_id": 158,
+    "course_section_id": 486513,
+    "root_account_id": 1,
+    "type": "StudentEnrollment",
+    "limit_privileges_to_course_section": false,
+    "enrollment_state": "active",
+    "role": "StudentEnrollment",
+    "grades": {
+      "current_grade": null,
+      "current_score": 100.0,
+      "final_grade": null,
+      "final_score": 98.12
+    },
+    "user": {
+      "id": 158,
+      "name": "Student, 8"
+    }
+  },
+  {
+    "course_id": 429487,
+    "id": 6323939,
+    "user_id": 159,
+    "course_section_id": 486513,
+    "root_account_id": 1,
+    "type": "StudentEnrollment",
+    "limit_privileges_to_course_section": false,
+    "enrollment_state": "active",
+    "role": "StudentEnrollment",
+    "grades": {
+      "current_grade": null,
+      "current_score": 100.0,
+      "final_grade": null,
+      "final_score": 45.12
+    },
+    "user": {
+      "id": 159,
+      "name": "Student, 9"
+    }
+  },
+  {
+    "course_id": 429487,
+    "id": 6323940,
+    "user_id": 160,
+    "course_section_id": 486513,
+    "root_account_id": 1,
+    "type": "StudentEnrollment",
+    "limit_privileges_to_course_section": false,
+    "enrollment_state": "active",
+    "role": "StudentEnrollment",
+    "grades": {
+      "current_grade": null,
+      "current_score": 100.0,
+      "final_grade": null,
+      "final_score": 70.12
+    },
+    "user": {
+      "id": 160,
+      "name": "Student, 10"
+    }
+  },
+  {
+    "course_id": 429487,
+    "id": 6323941,
+    "user_id": 160,
+    "course_section_id": 486514,
+    "root_account_id": 1,
+    "type": "StudentEnrollment",
+    "limit_privileges_to_course_section": false,
+    "enrollment_state": "active",
+    "role": "StudentEnrollment",
+    "grades": {
+      "current_grade": null,
+      "current_score": 100.0,
+      "final_grade": null,
+      "final_score": 70.12
+    },
+    "user": {
+      "id": 160,
+      "name": "Student Sec, 10"
+    }
+  }
+]
