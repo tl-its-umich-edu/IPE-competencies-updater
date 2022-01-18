@@ -32,6 +32,19 @@ def test_student_data_with_all_enrolled(api_handler, single_ipe_offering, studen
   students_grades_actual= comp_assigner.get_student_list_to_receive_competencies(student_data)
   assert 10 == len(students_grades_actual)
 
+def test_student_data_with_random_criteria_for_assigning_competencies_values(api_handler, single_ipe_offering, student_data):
+  """
+  This should return no students in the course when the assigning LO criteria is other than all enrolled or 70% grade
+  
+  params are pytest fixtures taken from fixtures folder and from these file under it competencies_data.py. 
+  api_handler from  conftest.py
+  """
+  single_ipe_offering[COL_ASSIGNING_LO_CRITERIA] = 'Do Not Run'
+  course = pd.Series(single_ipe_offering)
+  comp_assigner = IPECompetenciesAssigner(api_handler, '448447', course, {})
+  students_grades_actual= comp_assigner.get_student_list_to_receive_competencies(student_data)
+  assert [] == students_grades_actual
+
 def test_competencies_payload_based_according_to_course(api_handler, single_ipe_offering, rubric_simple, competencies_payload):
   """
   Correct competencies should be returned based on the course and assigned to the students
@@ -189,3 +202,27 @@ def test_competencies_assigned_to_students_with_few_failures(ipe_props, student_
     mock_competencies_assigning.side_effect = resp_mocks
     comp_assigner.assign_competancies(student_data)
   assert mock_competencies_assigning.call_count == 10
+
+def test_competencies_not_assigned_for_random_assignment_criteria(ipe_props, student_data, api_handler, single_ipe_offering, rubric_simple):
+  """
+  This tests that the competencies are assigned to the students when random assignment criteria is used.
+  
+  params are pytest fixtures taken from fixtures folder and from these file under it competencies_data.py, rubric_simplified_obj.py. 
+  api_handler from  conftest.py
+  """
+  url_partial = f'{CANVAS_URL_BEGIN}/courses/11111/enrollments'
+  full_url = '/'.join([ipe_props.get('api_url'), url_partial])
+  single_ipe_offering[COL_ASSIGNING_LO_CRITERIA] = 'Random assignment criteria'
+  course = pd.Series(single_ipe_offering)
+  comp_assigner = IPECompetenciesAssigner(api_handler, '448447122', course, rubric_simple)
+  resp_mocks: List[MagicMock] = [
+          MagicMock(
+              spec=Response, status_code=200, ok=True, text=json.dumps({'success': True}), url=full_url
+          )
+          for i in range(8)
+      ]
+  with patch.object(APIHandler, 'api_call_with_retries', autospec=True) as mock_competencies_assigning:
+    mock_competencies_assigning.side_effect = resp_mocks
+    comp_assigner.assign_competancies(student_data)
+  # since the criteria for competencies assigned is not all enrolled or 70% or greater so expect zero api calls made
+  assert mock_competencies_assigning.call_count == 0
