@@ -39,6 +39,20 @@ def ipe_ws_df(worksheets_data) -> pd.DataFrame:
     return df
 
 @pytest.fixture
+def ipe_ws_comp_df(worksheets_data_for_competencies_check) -> pd.DataFrame:
+    """
+    fixture for sample dataframe for filtering right competencies, dosage and criteria for assigning LO
+    """
+    return pd.DataFrame(worksheets_data_for_competencies_check)
+
+@pytest.fixture
+def ipe_ws_dup_df(worksheets_data_for_duplicate_course_comp_dosage_criteria) -> pd.DataFrame:
+    """
+    fixture for sample dataframe for filtering duplicate competencies, dosage and criteria for assigning LO
+    """
+    return pd.DataFrame(worksheets_data_for_duplicate_course_comp_dosage_criteria)
+    
+@pytest.fixture
 @mock.patch('gspread.Spreadsheet.fetch_sheet_metadata')
 def spreadsheet(moch_ws):
     properties = {'sheetId': '12344', 'title': 'Offerings'}

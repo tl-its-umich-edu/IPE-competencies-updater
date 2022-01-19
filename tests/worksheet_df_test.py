@@ -1,8 +1,11 @@
 import logging, pytest
 from typing import List
 import pandas as pd
-from ipe_utils.df_utils import df_columns_strip, df_remove_non_course_id, df_filter_course_based_on_month, current_time, df_filter_course_duplicates
-from constants import(COL_COURSE_ID, SCRIPT_RUN, WHEN_TO_RUN_SCRIPT)
+from ipe_utils.df_utils import (df_columns_strip, df_remove_non_course_id, df_filter_course_based_on_month, 
+current_time, df_filter_course_duplicates, df_dosage_clean_up, df_filter_courses_no_competencies_dosage_criteria_values)
+from constants import(COL_COURSE_ID, SCRIPT_RUN, WHEN_TO_RUN_SCRIPT ,COL_DOSAGE,
+COL_COMPETENCIES_IC, COL_COMPETENCIES_VE, COL_COMPETENCIES_IH, COL_COMPETENCIES_RR, 
+COL_COMPETENCIES_TTW, COL_ASSIGNING_LO_CRITERIA)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -53,7 +56,7 @@ def test_duplicate_course_ids_removed(dummy_df: pd.DataFrame):
     duplicate course ids are removed from the dataframe
     """
     df_actual = df_filter_course_duplicates(dummy_df)
-    assert df_actual.shape[0] == 7
+    assert df_actual.shape[0] == 6
 
 def test_filter_course_based_on_month_with_extra_spaces(ipe_ws_df: pd.DataFrame):
     """
@@ -64,4 +67,33 @@ def test_filter_course_based_on_month_with_extra_spaces(ipe_ws_df: pd.DataFrame)
     ipe_ws_df.at[6, WHEN_TO_RUN_SCRIPT] = 'JUne  '
     df_actual = df_filter_course_based_on_month(ipe_ws_df, '  june  ')
     assert df_actual.shape[0] == 7
+
+def test_dosage_correct_values(ipe_ws_comp_df: pd.DataFrame):
+    """
+    This is testing dosage is picking up only numeric values and inbetween 0 and 100
+    """
+    ipe_ws_comp_df.at[3, COL_DOSAGE] = 100
+    ipe_ws_comp_df.at[4, COL_DOSAGE] = 0
+    ipe_ws_comp_df.at[5, COL_DOSAGE] = 200.7
+    ipe_ws_comp_df.at[6, COL_DOSAGE] = 400
+    ipe_ws_comp_df.at[7, COL_DOSAGE] = 'don not pick up'
+    ipe_ws_comp_df.at[8, COL_DOSAGE] = 'n/a'
+    df_actual_non_number_filter = df_dosage_clean_up(ipe_ws_comp_df)
+    assert df_actual_non_number_filter.shape[0] == 11
+
+def test_competencies_criteria_lo_assigning_correctness(ipe_ws_comp_df: pd.DataFrame):
+    """
+    This is testing competencies, criteria assigning, dosage values are as expected
+    """
+    ipe_ws_comp_df.at[3, COL_COMPETENCIES_IC] = 'happy'
+    ipe_ws_comp_df.at[4, COL_COMPETENCIES_VE] = ''
+    ipe_ws_comp_df.at[5, COL_COMPETENCIES_IH] = 'do not run'
+    ipe_ws_comp_df.at[6, COL_COMPETENCIES_RR] = 'master'
+    ipe_ws_comp_df.at[7, COL_COMPETENCIES_TTW] = 'wrong'
+    ipe_ws_comp_df.at[8, COL_ASSIGNING_LO_CRITERIA] = 'do not Run'
+    ipe_ws_comp_df.at[9, COL_DOSAGE] = 500
+
+    df_actual = df_filter_courses_no_competencies_dosage_criteria_values(ipe_ws_comp_df)
+    assert df_actual.shape[0] == 8
+
     

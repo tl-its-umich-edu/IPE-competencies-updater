@@ -92,13 +92,16 @@ class IPECompetenciesAssigner:
       """
       assignment_criteria = self.course[COL_ASSIGNING_LO_CRITERIA]
       if assignment_criteria == AC_ALL_ENROLLED:
-        logger.info(f"For course {self.course[COL_COURSE_ID]} with competencies criteria: '{AC_ALL_ENROLLED}', {len(student_grades)} students will receive competencies")
+        logger.info(f"For course {self.course[COL_COURSE_ID]} with competencies criteria: '{assignment_criteria}', {len(student_grades)} students will receive competencies")
         return student_grades
       elif assignment_criteria == AC_70_PERCENT_GRADE:
         students_greater_than_70_percent_grade = [student for student in student_grades if student['grade'] is not None and student['grade'] >= COMPETENCY_ASSIGNING_COURSE_GRADE]
-        logger.info(f"For course {self.course[COL_COURSE_ID]} with competencies criteria: '{AC_70_PERCENT_GRADE}', {len(students_greater_than_70_percent_grade)}/{len(student_grades)} students will receive competencies")
+        logger.info(f"For course {self.course[COL_COURSE_ID]} with competencies criteria: '{assignment_criteria}', {len(students_greater_than_70_percent_grade)}/{len(student_grades)} students will receive competencies")
         return students_greater_than_70_percent_grade
-      else:return student_grades
+      else:
+      # In case of not all enrolled or 70% grade, we will not return any student. We are filtering this case in the Dataframe clean up step, being proactive for unknow  usecases.
+        logger.info(f"For course {self.course[COL_COURSE_ID]} with competencies criteria: '{assignment_criteria}', 0 students received competencies")
+        return []
       
     def assign_competancies(self, students_grades) -> None:
       course_id = self.course[COL_COURSE_ID]
