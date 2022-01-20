@@ -3,7 +3,7 @@ import json
 from typing import Any, Dict, List, NoReturn, Optional, Union
 from requests.models import Response
 from constants import (
-    CANVAS_URL_BEGIN, ASSIGNMENT_GROUP_NAME, ASSIGNMENT_NAME)
+    CANVAS_URL_BEGIN, ASSIGNMENT_GROUP_NAME, ASSIGNMENT_NAME, ASSIGNMENT_DESCRIPTION)
 from api_handler.api_calls import APIHandler
 from ipe_process_orchestrator.api_helper import response_none_check
 
@@ -79,7 +79,7 @@ class IPEAssignmentFlow:
         """
         assignment_payload: Dict = {
             'assignment[name]': ASSIGNMENT_NAME,
-            'assignment[description]': 'This assignment is used for applying IPE competencies and does not require any student submissions',
+            'assignment[description]': ASSIGNMENT_DESCRIPTION,
             'assignment[points_possible]': 0,
             'assignment[submission_types][]': 'none',
             'assignment[assignment_group_id]': assignment_group_id,
