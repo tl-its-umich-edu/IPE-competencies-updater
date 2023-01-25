@@ -37,8 +37,6 @@ class APIHandler:
                 logger.error('JSONDecodeError encountered')
                 response_successful = False
 
-        if not response_successful:
-            logger.error(response.text)
         return response_successful
     
     def get_next_page(self, response: Response) -> Any:

@@ -27,7 +27,7 @@ def df_dosage_clean_up(df: pd.DataFrame) -> pd.DataFrame:
     """
     Dosage values should be  number, and in between 0 and 100.
     """
-    df_dosage_to_numeric = df.loc[df[COL_DOSAGE].apply(pd.to_numeric, errors='coerce').notnull()]
+    df_dosage_to_numeric = df.loc[df[COL_DOSAGE].apply(pd.to_numeric, errors='coerce').notnull()].copy()
     df_dosage_to_numeric[COL_DOSAGE] = pd.to_numeric(df_dosage_to_numeric[COL_DOSAGE], downcast="float")
     return df_dosage_to_numeric[(0 <= df_dosage_to_numeric[COL_DOSAGE]) & (df_dosage_to_numeric[COL_DOSAGE] <= 100)]
 

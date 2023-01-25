@@ -12,6 +12,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": false,
+            "envFile": "${userHome}/secrets/ipe/.env"
 
 
         }
