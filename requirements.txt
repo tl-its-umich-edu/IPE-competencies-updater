@@ -3,4 +3,4 @@ pandas==1.5.3
 python-dotenv==0.21.1
 mypy==0.910
 gspread==5.7.2
-pytest==7.2.1
+pytest==9.0.3
