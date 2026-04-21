@@ -1,6 +1,6 @@
 -e git+https://github.com/tl-its-umich-edu/api-utils-python@v3.0#egg=umich-api
 pandas==1.5.3
-python-dotenv==0.21.1
+python-dotenv==1.2.2
 mypy==0.910
 gspread==5.7.2
 pytest==7.2.1
